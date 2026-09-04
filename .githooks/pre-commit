@@ -1,0 +1,11 @@
+#!/bin/sh
+set -eu
+
+if command -v moon >/dev/null 2>&1; then
+  moon check --deny-warn
+elif [ -x "$HOME/.moon/bin/moon" ]; then
+  "$HOME/.moon/bin/moon" check --deny-warn
+else
+  echo "MoonBit toolchain not found; install it before committing." >&2
+  exit 1
+fi

@@ -1,0 +1,26 @@
+name: Feature or milestone
+description: Propose a scoped, testable MoonPermit change
+title: "[Milestone] "
+labels: [enhancement]
+body:
+  - type: textarea
+    id: outcome
+    attributes:
+      label: Outcome
+      description: What externally observable behavior should exist?
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance evidence
+      description: List tests, examples, and documentation that prove completion.
+    validations:
+      required: true
+  - type: textarea
+    id: boundaries
+    attributes:
+      label: Boundaries and risks
+      description: State non-goals, compatibility constraints, and security implications.
+    validations:
+      required: true

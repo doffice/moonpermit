@@ -1,0 +1,38 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: hustcer/setup-moonbit@v1
+      - name: Toolchain
+        run: moon version --all
+      - name: Check
+        run: moon check --deny-warn
+      - name: Test
+        run: moon test --deny-warn
+      - name: Format
+        run: moon fmt --check
+      - name: Public API drift
+        shell: bash
+        run: |
+          moon info
+          git diff --exit-code
+      - name: Build
+        run: moon build
+      - name: CLI smoke test
+        run: moon run cmd/main

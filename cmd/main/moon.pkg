@@ -1,0 +1,5 @@
+// import {
+//   "doffice/moonpermit" @lib,
+// }
+
+pkgtype(kind: "executable")
