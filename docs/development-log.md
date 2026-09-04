@@ -115,3 +115,15 @@ Next gate: final repository audit, clean-clone verification, and remote CI.
 
 Next gate: publish `main`, observe remote CI, then complete owner-only event
 registration, group membership, and rolling eligibility review.
+
+## 2026-09-04 — Public CI milestone
+
+- Published the full 11-commit history to the public `doffice/moonpermit`
+  repository with `main` as the remote default branch.
+- Verified the remote branch points to the same `181290e` commit as the local
+  accepted clone.
+- GitHub Actions run #1 passed all four jobs: Ubuntu, macOS, Windows, and the
+  coverage/benchmark quality job.
+
+Next gate: create public planning/review artifacts, publish the Mooncakes
+package, and complete owner-only registration and eligibility steps.

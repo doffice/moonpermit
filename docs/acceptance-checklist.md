@@ -22,7 +22,7 @@ notices override any older August-specific detail.
 - [x] `moon check --deny-warn` and `moon test --deny-warn` pass.
 - [x] `moon fmt --check` passes locally.
 - [x] `moon info` is generated and public APIs reviewed locally.
-- [ ] CI runs check, test, format, API drift, build, and runnable smoke test.
+- [x] CI runs check, test, format, API drift, build, and runnable smoke test.
 - [x] README documents installation, API, CLI, examples, limits, and release status.
 - [x] At least one end-to-end example runs without paid services or secrets.
 - [x] Core promises in `proposal.md` are implemented and tested.
@@ -41,8 +41,8 @@ notices override any older August-specific detail.
 
 ## Final manual checks
 
-- [ ] Verify the remote default branch and that all work is visible there.
-- [ ] Verify repository owner, primary contributor, and applicant relationship.
+- [x] Verify the remote default branch and that all work is visible there.
+- [x] Verify repository owner, primary contributor, and applicant relationship.
 - [x] Re-run the documented commands in a clean clone.
 - [ ] Confirm official September submission fields and deadline against current notice.
 - [ ] Record a short demonstration and prepare a technical explanation.

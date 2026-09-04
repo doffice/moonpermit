@@ -20,6 +20,10 @@ Current result: 55 tests pass. Tests are black-box unless an executable-only
 parser requires a white-box package test. The suite includes easy,
 intermediate, difficult-boundary, bounded-property, and state-machine cases.
 
+Remote CI run [#1](https://github.com/doffice/moonpermit/actions/runs/33846891880)
+passed on Ubuntu, macOS, and Windows, with a separate Ubuntu quality job for
+coverage and release benchmarks. The run tested commit `181290e` on 2026-09-04.
+
 The reviewed MoonBit source snapshot contains 1,725 implementation/example
 lines, 1,394 test/benchmark lines, and 492 declarative contract lines (3,611
 total). Generated interfaces and build output are excluded. These categories
