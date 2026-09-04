@@ -46,6 +46,7 @@ structured plan -> compile minimum permit -> approve once
 - `docs/acceptance-checklist.md`: continuously maintained release gate.
 - `docs/development-log.md`: dated, public development record.
 - `docs/quality.md`: reproducible strict gate, coverage, and benchmarks.
+- `docs/reviewer-guide.zh.md`: Chinese reviewer guide and three-minute demo.
 - `docs/cli.md`: command reference and effect-expression grammar.
 - `examples/basic`: dependency-free end-to-end embedding example.
 - `cmd/main`: runnable CLI package.
