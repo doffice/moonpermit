@@ -47,6 +47,12 @@ A child request is validated grant by grant against the parent permit. It may
 reduce resources, methods, arguments, expiry, and remaining budgets. It may not
 introduce a new effect kind or restore consumed authority.
 
+Delegation runs against a runtime snapshot, not the original permit. Finite
+child call and byte budgets are reserved from matching parent counters, so
+issuing multiple children cannot duplicate a finite allowance. Matching
+prefers the tightest usable parent grant. All allocations are staged first and
+committed together; a late failure leaves the parent unchanged.
+
 ## Runtime enforcement and evidence
 
 Each runtime owns a fresh mutable counter set for one immutable permit. A check

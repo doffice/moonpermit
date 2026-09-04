@@ -47,3 +47,15 @@ Next gate: consume budgets at runtime and emit deterministic receipts.
 - Verified 23 tests under `--deny-warn` and reviewed generated public APIs.
 
 Next gate: implement provably attenuating child-permit delegation.
+
+## 2026-09-04 — Non-amplifying delegation milestone
+
+- Added child-permit issuance from live remaining parent authority.
+- Reserved finite call and byte budgets instead of copying them.
+- Made multi-grant allocation transactional and fail closed on late failure.
+- Preferred tighter matching grants to preserve broader authority.
+- Covered scope escalation, consumed-budget replenishment, rollback, overlap,
+  and expiry with six black-box tests.
+- Verified 29 tests under `--deny-warn`.
+
+Next gate: add structural intersections and authority-expansion diffs.

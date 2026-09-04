@@ -57,6 +57,7 @@ pub(all) suberror PermitError {
   EmptyInvocationId
   InvalidLogicalTime(Int64)
   InvalidByteCost(Int64)
+  ChildAuthorityExceeded(String)
 } derive(Eq, ToJson, @debug.Debug)
 
 pub(all) suberror ScopeError {
@@ -190,6 +191,7 @@ pub struct Runtime {
   mut sequence : Int
 }
 pub fn Runtime::check(Self, String, EffectScope, Int64, byte_cost? : Int64) -> Receipt raise PermitError
+pub fn Runtime::delegate(Self, String, Array[EffectRequest], Int64) -> Permit raise PermitError
 pub fn Runtime::permit_id(Self) -> String
 pub fn Runtime::receipt_count(Self) -> Int
 pub fn Runtime::receipts(Self) -> Array[Receipt]

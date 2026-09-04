@@ -12,3 +12,5 @@ All notable changes will be documented here.
   permit containment.
 - Added runtime scope enforcement, atomic budget consumption, expiry checks,
   replay protection, grant fallback, and deterministic decision receipts.
+- Added transactional child-permit delegation that reserves finite parent
+  budgets and rejects scope widening, replenishment, and expired authority.

@@ -114,6 +114,7 @@ pub(all) suberror PermitError {
   EmptyInvocationId
   InvalidLogicalTime(Int64)
   InvalidByteCost(Int64)
+  ChildAuthorityExceeded(String)
 } derive(Eq, Debug, ToJson)
 
 ///|
@@ -502,6 +503,21 @@ pub fn Runtime::receipts(self : Runtime) -> Array[Receipt] {
 /// Return the current budget for a grant identifier.
 #declaration_only
 pub fn Runtime::remaining_budget(self : Runtime, grant_id : String) -> Budget? {
+  ...
+}
+
+///|
+/// Issue a child permit by reserving its finite budgets from this runtime.
+///
+/// The operation is transactional: any unsupported child grant leaves every
+/// parent counter unchanged. `now` is used to reject expired parent grants.
+#declaration_only
+pub fn Runtime::delegate(
+  self : Runtime,
+  child_id : String,
+  requests : Array[EffectRequest],
+  now : Int64,
+) -> Permit raise PermitError {
   ...
 }
 
