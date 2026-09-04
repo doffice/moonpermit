@@ -3,6 +3,7 @@ package "doffice/moonpermit"
 
 import {
   "moonbitlang/core/debug",
+  "moonbitlang/core/set",
 }
 
 // Values
@@ -42,6 +43,8 @@ pub fn path_tree(String) -> PathScope raise ScopeError
 
 pub fn permit_contains(Permit, Permit) -> Bool
 
+pub fn runtime(Permit) -> Runtime
+
 pub fn unlimited_budget() -> Budget
 
 // Errors
@@ -51,6 +54,9 @@ pub(all) suberror PermitError {
   InvalidCallLimit(Int)
   InvalidByteLimit(Int64)
   InvalidExpiry(Int64)
+  EmptyInvocationId
+  InvalidLogicalTime(Int64)
+  InvalidByteCost(Int64)
 } derive(Eq, ToJson, @debug.Debug)
 
 pub(all) suberror ScopeError {
@@ -122,6 +128,8 @@ pub fn Grant::budget(Self) -> Budget
 pub fn Grant::effect(Self) -> EffectScope
 pub fn Grant::id(Self) -> String
 
+type GrantState
+
 pub struct HostScope {
   canonical : String
   subdomains : Bool
@@ -150,6 +158,48 @@ pub fn Permit::canonical(Self) -> String
 pub fn Permit::grant_count(Self) -> Int
 pub fn Permit::grants(Self) -> Array[Grant]
 pub fn Permit::id(Self) -> String
+
+pub(all) enum ReasonCode {
+  Granted
+  NoMatchingGrant
+  PermitExpired
+  CallBudgetExhausted
+  ByteBudgetExhausted
+  DuplicateInvocation
+} derive(Eq, ToJson, @debug.Debug)
+
+pub(all) struct Receipt {
+  sequence : Int
+  invocation_id : String
+  permit_id : String
+  verdict : Verdict
+  grant_id : String?
+  effect : String
+  reason : ReasonCode
+  message : String
+  remaining_calls : Int?
+  remaining_bytes : Int64?
+} derive(Eq, ToJson, @debug.Debug)
+pub fn Receipt::allowed(Self) -> Bool
+
+pub struct Runtime {
+  permit_id : String
+  states : Array[GrantState]
+  seen_invocations : @set.Set[String]
+  receipts : Array[Receipt]
+  mut sequence : Int
+}
+pub fn Runtime::check(Self, String, EffectScope, Int64, byte_cost? : Int64) -> Receipt raise PermitError
+pub fn Runtime::permit_id(Self) -> String
+pub fn Runtime::receipt_count(Self) -> Int
+pub fn Runtime::receipts(Self) -> Array[Receipt]
+pub fn Runtime::remaining_budget(Self, String) -> Budget?
+
+pub(all) enum Verdict {
+  Allow
+  Deny
+  NeedsApproval
+} derive(Eq, ToJson, @debug.Debug)
 
 // Type aliases
 

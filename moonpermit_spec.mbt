@@ -111,7 +111,54 @@ pub(all) suberror PermitError {
   InvalidCallLimit(Int)
   InvalidByteLimit(Int64)
   InvalidExpiry(Int64)
+  EmptyInvocationId
+  InvalidLogicalTime(Int64)
+  InvalidByteCost(Int64)
 } derive(Eq, Debug, ToJson)
+
+///|
+/// Runtime authorization result.
+pub(all) enum Verdict {
+  Allow
+  Deny
+  NeedsApproval
+} derive(Eq, Debug, ToJson)
+
+///|
+/// Stable machine-readable reason for a runtime decision.
+pub(all) enum ReasonCode {
+  Granted
+  NoMatchingGrant
+  PermitExpired
+  CallBudgetExhausted
+  ByteBudgetExhausted
+  DuplicateInvocation
+} derive(Eq, Debug, ToJson)
+
+///|
+/// Explainable evidence emitted for every checked invocation.
+pub(all) struct Receipt {
+  sequence : Int
+  invocation_id : String
+  permit_id : String
+  verdict : Verdict
+  grant_id : String?
+  effect : String
+  reason : ReasonCode
+  message : String
+  remaining_calls : Int?
+  remaining_bytes : Int64?
+} derive(Eq, Debug, ToJson)
+
+///|
+/// Stateful, single-owner evaluator for one permit.
+pub struct Runtime {
+  permit_id : String
+  states : Array[GrantState]
+  seen_invocations : Set[String]
+  receipts : Array[Receipt]
+  mut sequence : Int
+}
 
 ///|
 /// Build an exact repository-relative path scope.
@@ -405,5 +452,62 @@ pub fn grant_contains(grant : Grant, requested : Grant) -> Bool {
 /// Whether every grant in `requested` is covered by `grant`.
 #declaration_only
 pub fn permit_contains(grant : Permit, requested : Permit) -> Bool {
+  ...
+}
+
+///|
+/// Start an isolated runtime with fresh counters for one permit.
+#declaration_only
+pub fn runtime(permit : Permit) -> Runtime {
+  ...
+}
+
+///|
+/// Check and, when allowed, consume one concrete effect invocation.
+///
+/// `now` is an explicit logical timestamp. Expiry is exclusive.
+#declaration_only
+pub fn Runtime::check(
+  self : Runtime,
+  invocation_id : String,
+  requested : EffectScope,
+  now : Int64,
+  byte_cost? : Int64 = 0L,
+) -> Receipt raise PermitError {
+  ...
+}
+
+///|
+/// Return the permit identifier attached to this runtime.
+#declaration_only
+pub fn Runtime::permit_id(self : Runtime) -> String {
+  ...
+}
+
+///|
+/// Return the number of decisions emitted, including denials.
+#declaration_only
+pub fn Runtime::receipt_count(self : Runtime) -> Int {
+  ...
+}
+
+///|
+/// Return a defensive copy of all receipts in sequence order.
+#declaration_only
+pub fn Runtime::receipts(self : Runtime) -> Array[Receipt] {
+  ...
+}
+
+///|
+/// Return the current budget for a grant identifier.
+#declaration_only
+pub fn Runtime::remaining_budget(self : Runtime, grant_id : String) -> Budget? {
+  ...
+}
+
+///|
+/// Convenience predicate for an allow receipt.
+#declaration_only
+pub fn Receipt::allowed(self : Receipt) -> Bool {
   ...
 }

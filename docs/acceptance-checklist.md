@@ -20,8 +20,8 @@ notices override any older August-specific detail.
 - [x] MoonBit is the primary implementation language.
 - [x] `moon check` and `moon test` pass.
 - [x] `moon check --deny-warn` and `moon test --deny-warn` pass.
-- [ ] `moon fmt --check` passes.
-- [ ] `moon info` is generated and public APIs reviewed.
+- [x] `moon fmt --check` passes locally.
+- [x] `moon info` is generated and public APIs reviewed locally.
 - [ ] CI runs check, test, format, API drift, build, and runnable smoke test.
 - [ ] README documents installation, API, CLI, examples, limits, and release.
 - [ ] At least one end-to-end example runs without paid services or secrets.
@@ -35,7 +35,7 @@ notices override any older August-specific detail.
 - [ ] Property/state-machine tests exercise containment and budget invariants.
 - [ ] Coverage report and documented exclusions are reviewed.
 - [ ] Benchmarks use deterministic counters plus reproducible timing notes.
-- [ ] Architecture, threat model, source provenance, and AI use are documented.
+- [x] Architecture, threat model, source provenance, and AI use are documented.
 - [ ] Effective MoonBit implementation scale is substantial; no filler code.
 - [ ] Demo clearly shows allow, deny, exhaustion, expiry, and delegation failure.
 

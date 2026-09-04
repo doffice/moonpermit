@@ -10,3 +10,5 @@ All notable changes will be documented here.
 - Added easy, intermediate, and difficult black-box specification tests.
 - Added budget validation, plan compilation, exact-scope deduplication, and
   permit containment.
+- Added runtime scope enforcement, atomic budget consumption, expiry checks,
+  replay protection, grant fallback, and deterministic decision receipts.

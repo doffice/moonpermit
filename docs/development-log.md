@@ -35,3 +35,15 @@ Next gate: add permit compilation, budgets, runtime consumption, and delegation.
 - Verified 16 tests under `--deny-warn`.
 
 Next gate: consume budgets at runtime and emit deterministic receipts.
+
+## 2026-09-04 — Runtime enforcement milestone
+
+- Added stateful checks for scope, expiry, call budgets, and byte budgets.
+- Made successful budget consumption atomic: failed checks consume nothing.
+- Added invocation replay protection and a receipt for every allow or denial.
+- Kept grant selection deterministic while permitting fallback to another
+  matching grant that still has budget.
+- Added seven black-box runtime tests, including malformed metadata boundaries.
+- Verified 23 tests under `--deny-warn` and reviewed generated public APIs.
+
+Next gate: implement provably attenuating child-permit delegation.
