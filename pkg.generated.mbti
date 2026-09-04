@@ -11,6 +11,8 @@ pub fn budget(max_calls? : Int, max_bytes? : Int64, expires_at? : Int64) -> Budg
 
 pub fn budget_contains(Budget, Budget) -> Bool
 
+pub fn budget_intersection(Budget, Budget) -> Budget
+
 pub fn command_contains(CommandScope, CommandScope) -> Bool
 
 pub fn command_exact(String, Array[String]) -> CommandScope raise ScopeError
@@ -19,7 +21,11 @@ pub fn command_prefix(String, Array[String]) -> CommandScope raise ScopeError
 
 pub fn compile_plan(String, Array[EffectRequest]) -> Permit raise PermitError
 
+pub fn diff_permits(Permit, Permit) -> PermitDiff
+
 pub fn effect_contains(EffectScope, EffectScope) -> Containment
+
+pub fn effect_intersection(EffectScope, EffectScope) -> EffectScope?
 
 pub fn effect_request(EffectScope, Budget) -> EffectRequest
 
@@ -103,6 +109,14 @@ pub(all) enum DataClass {
   Secret
 } derive(Eq, ToJson, @debug.Debug)
 
+pub(all) struct DiffEntry {
+  effect : String
+  budget : String
+  verdict : Verdict
+  covered_by : String?
+  explanation : String
+} derive(Eq, ToJson, @debug.Debug)
+
 pub struct EffectRequest {
   effect : EffectScope
   budget : Budget
@@ -159,6 +173,15 @@ pub fn Permit::canonical(Self) -> String
 pub fn Permit::grant_count(Self) -> Int
 pub fn Permit::grants(Self) -> Array[Grant]
 pub fn Permit::id(Self) -> String
+
+pub struct PermitDiff {
+  approved_id : String
+  requested_id : String
+  entries : Array[DiffEntry]
+} derive(Eq, ToJson, @debug.Debug)
+pub fn PermitDiff::entries(Self) -> Array[DiffEntry]
+pub fn PermitDiff::render(Self) -> String
+pub fn PermitDiff::requires_approval(Self) -> Bool
 
 pub(all) enum ReasonCode {
   Granted

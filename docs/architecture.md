@@ -28,6 +28,14 @@ The first implementation uses deliberately decidable constraints:
 
 Unknown, malformed, or incomparable constraints fail closed.
 
+## Structural intersections
+
+Intersections produce the greatest authority represented by both inputs.
+Comparable path, command, and host scopes select the narrower value. Network
+scopes additionally intersect HTTP methods and select the less sensitive data
+class; an empty method overlap is disjoint. Budget intersections independently
+select the tighter finite call, byte, and expiry limits.
+
 ## Minimum permit compilation
 
 The planner normalizes and sorts scopes, then merges exact duplicates without
@@ -40,6 +48,15 @@ budget to unrelated resources, so that optimization is deferred until its
 budget algebra is specified and tested. For duplicate scopes, the compiler
 takes the least common ceiling of each limit; an unbounded declaration remains
 unbounded.
+
+## Approval diff
+
+Permit diffing is intentionally target-centric: each canonically ordered grant
+in the requested permit is classified against the existing approval. A grant
+contained in one approved grant is marked `COVERED`; otherwise it is marked
+`NEEDS_APPROVAL`. Removing or narrowing authority therefore creates no approval
+prompt, while any resource or budget expansion does. The rendered form is
+stable across equivalent input ordering.
 
 ## Delegation
 

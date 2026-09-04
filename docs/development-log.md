@@ -59,3 +59,17 @@ Next gate: implement provably attenuating child-permit delegation.
 - Verified 29 tests under `--deny-warn`.
 
 Next gate: add structural intersections and authority-expansion diffs.
+
+## 2026-09-04 — Intersection and approval-diff milestone
+
+- Added greatest-common effect intersections for paths, commands, networks,
+  secrets, and separate tightest-limit budget intersections.
+- Added deterministic requested-authority diffs with `COVERED` and
+  `NEEDS_APPROVAL` classifications.
+- Ensured narrowing and reordering do not trigger approval while resource and
+  budget expansion do.
+- Added eight black-box tests for comparable, disjoint, mixed-network, and
+  deterministic-diff cases.
+- Verified 37 tests under `--deny-warn`.
+
+Next gate: deliver a runnable CLI vertical slice and offline receipt audit.

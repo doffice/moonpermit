@@ -104,6 +104,24 @@ pub struct Permit {
 } derive(Eq, Debug, ToJson)
 
 ///|
+/// One requested grant classified against an already approved permit.
+pub(all) struct DiffEntry {
+  effect : String
+  budget : String
+  verdict : Verdict
+  covered_by : String?
+  explanation : String
+} derive(Eq, Debug, ToJson)
+
+///|
+/// Deterministic, requested-authority-centric permit comparison.
+pub struct PermitDiff {
+  approved_id : String
+  requested_id : String
+  entries : Array[DiffEntry]
+} derive(Eq, Debug, ToJson)
+
+///|
 /// Invalid permit, budget, or plan input.
 pub(all) suberror PermitError {
   EmptyPermitId
@@ -310,6 +328,17 @@ pub fn effect_contains(
 }
 
 ///|
+/// Return the greatest scope represented by both inputs, or `None` when their
+/// effect sets are disjoint.
+#declaration_only
+pub fn effect_intersection(
+  left : EffectScope,
+  right : EffectScope,
+) -> EffectScope? {
+  ...
+}
+
+///|
 /// Produce a deterministic string used by planners and audit reports.
 #declaration_only
 pub fn EffectScope::canonical(self : EffectScope) -> String {
@@ -359,6 +388,13 @@ pub fn Budget::expires_at(self : Budget) -> Int64? {
 /// Whether every resource allowed by `requested` is covered by `grant`.
 #declaration_only
 pub fn budget_contains(grant : Budget, requested : Budget) -> Bool {
+  ...
+}
+
+///|
+/// Combine two simultaneous budget constraints by taking each tighter limit.
+#declaration_only
+pub fn budget_intersection(left : Budget, right : Budget) -> Budget {
   ...
 }
 
@@ -453,6 +489,34 @@ pub fn grant_contains(grant : Grant, requested : Grant) -> Bool {
 /// Whether every grant in `requested` is covered by `grant`.
 #declaration_only
 pub fn permit_contains(grant : Permit, requested : Permit) -> Bool {
+  ...
+}
+
+///|
+/// Compare a requested permit with an existing approval.
+#declaration_only
+pub fn diff_permits(approved : Permit, requested : Permit) -> PermitDiff {
+  ...
+}
+
+///|
+/// Return diff entries in canonical requested-grant order.
+#declaration_only
+pub fn PermitDiff::entries(self : PermitDiff) -> Array[DiffEntry] {
+  ...
+}
+
+///|
+/// Whether at least one requested grant expands authority.
+#declaration_only
+pub fn PermitDiff::requires_approval(self : PermitDiff) -> Bool {
+  ...
+}
+
+///|
+/// Render a stable line-oriented explanation suitable for review.
+#declaration_only
+pub fn PermitDiff::render(self : PermitDiff) -> String {
   ...
 }
 

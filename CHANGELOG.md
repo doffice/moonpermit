@@ -14,3 +14,5 @@ All notable changes will be documented here.
   replay protection, grant fallback, and deterministic decision receipts.
 - Added transactional child-permit delegation that reserves finite parent
   budgets and rejects scope widening, replenishment, and expired authority.
+- Added structural effect and budget intersections plus deterministic permit
+  diffs that isolate authority requiring new approval.
