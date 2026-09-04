@@ -162,11 +162,38 @@ pub(all) struct Receipt {
   permit_id : String
   verdict : Verdict
   grant_id : String?
+  requested : EffectScope
   effect : String
+  logical_time : Int64
+  byte_cost : Int64
   reason : ReasonCode
   message : String
   remaining_calls : Int?
   remaining_bytes : Int64?
+} derive(Eq, Debug, ToJson)
+
+///|
+/// Stable category for one offline verification failure.
+pub(all) enum AuditIssueCode {
+  SequenceMismatch
+  PermitMismatch
+  ReplayMismatch
+  InvalidReceipt
+} derive(Eq, Debug, ToJson)
+
+///|
+/// One evidence-integrity problem found during replay.
+pub(all) struct AuditFinding {
+  receipt_index : Int
+  code : AuditIssueCode
+  message : String
+} derive(Eq, Debug, ToJson)
+
+///|
+/// Result of deterministically replaying a receipt stream.
+pub struct AuditReport {
+  checked : Int
+  findings : Array[AuditFinding]
 } derive(Eq, Debug, ToJson)
 
 ///|
@@ -589,5 +616,36 @@ pub fn Runtime::delegate(
 /// Convenience predicate for an allow receipt.
 #declaration_only
 pub fn Receipt::allowed(self : Receipt) -> Bool {
+  ...
+}
+
+///|
+/// Replay receipts from a fresh permit and detect inconsistent evidence.
+#declaration_only
+pub fn audit_receipts(
+  permit : Permit,
+  receipts : Array[Receipt],
+) -> AuditReport {
+  ...
+}
+
+///|
+/// Whether every supplied receipt exactly matches deterministic replay.
+#declaration_only
+pub fn AuditReport::passed(self : AuditReport) -> Bool {
+  ...
+}
+
+///|
+/// Return the number of replayed receipts.
+#declaration_only
+pub fn AuditReport::checked(self : AuditReport) -> Int {
+  ...
+}
+
+///|
+/// Return a defensive copy of all findings.
+#declaration_only
+pub fn AuditReport::findings(self : AuditReport) -> Array[AuditFinding] {
   ...
 }

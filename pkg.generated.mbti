@@ -7,6 +7,8 @@ import {
 }
 
 // Values
+pub fn audit_receipts(Permit, Array[Receipt]) -> AuditReport
+
 pub fn budget(max_calls? : Int, max_bytes? : Int64, expires_at? : Int64) -> Budget raise PermitError
 
 pub fn budget_contains(Budget, Budget) -> Bool
@@ -79,6 +81,27 @@ pub(all) suberror ScopeError {
 } derive(Eq, ToJson, @debug.Debug)
 
 // Types and methods
+pub(all) struct AuditFinding {
+  receipt_index : Int
+  code : AuditIssueCode
+  message : String
+} derive(Eq, ToJson, @debug.Debug)
+
+pub(all) enum AuditIssueCode {
+  SequenceMismatch
+  PermitMismatch
+  ReplayMismatch
+  InvalidReceipt
+} derive(Eq, ToJson, @debug.Debug)
+
+pub struct AuditReport {
+  checked : Int
+  findings : Array[AuditFinding]
+} derive(Eq, ToJson, @debug.Debug)
+pub fn AuditReport::checked(Self) -> Int
+pub fn AuditReport::findings(Self) -> Array[AuditFinding]
+pub fn AuditReport::passed(Self) -> Bool
+
 pub struct Budget {
   max_calls : Int?
   max_bytes : Int64?
@@ -198,7 +221,10 @@ pub(all) struct Receipt {
   permit_id : String
   verdict : Verdict
   grant_id : String?
+  requested : EffectScope
   effect : String
+  logical_time : Int64
+  byte_cost : Int64
   reason : ReasonCode
   message : String
   remaining_calls : Int?

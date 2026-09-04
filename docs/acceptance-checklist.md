@@ -23,8 +23,8 @@ notices override any older August-specific detail.
 - [x] `moon fmt --check` passes locally.
 - [x] `moon info` is generated and public APIs reviewed locally.
 - [ ] CI runs check, test, format, API drift, build, and runnable smoke test.
-- [ ] README documents installation, API, CLI, examples, limits, and release.
-- [ ] At least one end-to-end example runs without paid services or secrets.
+- [x] README documents installation, API, CLI, examples, limits, and release status.
+- [x] At least one end-to-end example runs without paid services or secrets.
 - [ ] Core promises in `proposal.md` are implemented and tested.
 - [ ] Repository contains no build cache, secret, temporary, or unknown-origin artifact.
 - [ ] Package is published to mooncakes.io and installation is verified.
@@ -37,7 +37,7 @@ notices override any older August-specific detail.
 - [ ] Benchmarks use deterministic counters plus reproducible timing notes.
 - [x] Architecture, threat model, source provenance, and AI use are documented.
 - [ ] Effective MoonBit implementation scale is substantial; no filler code.
-- [ ] Demo clearly shows allow, deny, exhaustion, expiry, and delegation failure.
+- [x] Demo clearly shows allow, deny, exhaustion, expiry, and delegation failure.
 
 ## Final manual checks
 

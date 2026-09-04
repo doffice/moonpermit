@@ -87,6 +87,15 @@ Logical time is supplied explicitly so tests and replays are deterministic.
 The embedding host is responsible for a trustworthy clock and durable receipt
 storage when those properties are required.
 
+## Offline audit
+
+Receipts retain the normalized typed request, logical time, byte cost, decision,
+selected grant, and remaining counters. The auditor starts from a fresh permit
+and replays every receipt in order, comparing the complete expected record.
+Sequence gaps, wrong permit identifiers, invalid inputs, altered decisions,
+and altered accounting are reported as stable finding categories. This detects
+inconsistency but is not a cryptographic authenticity claim.
+
 ## Trusted computing boundary
 
 The pure decision engine assumes the host mediates every protected tool call

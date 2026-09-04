@@ -1,7 +1,5 @@
 import {
   "doffice/moonpermit",
-  "moonbitlang/core/argparse",
-  "moonbitlang/core/string",
 }
 
 pkgtype(kind: "executable")

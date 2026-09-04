@@ -25,7 +25,9 @@ MoonPermit is under active development for the 2026 MoonBit September
 Hackathon. The repository starts from an empty public project, and development
 history is intentionally kept visible.
 
-Current milestone: normalized effect scopes and executable containment tests.
+Current milestone: the core vertical slice is runnable. Scope containment,
+budgeted runtime checks, non-amplifying delegation, approval diffs, JSON
+receipts, and deterministic offline replay are implemented and tested.
 
 ## Planned workflow
 
@@ -43,7 +45,63 @@ structured plan -> compile minimum permit -> approve once
 - `docs/threat-model.md`: security claims and explicit non-claims.
 - `docs/acceptance-checklist.md`: continuously maintained release gate.
 - `docs/development-log.md`: dated, public development record.
+- `docs/cli.md`: command reference and effect-expression grammar.
+- `examples/basic`: dependency-free end-to-end embedding example.
 - `cmd/main`: runnable CLI package.
+
+## Quick start
+
+Install the current stable MoonBit toolchain, clone this repository, and run:
+
+```bash
+moon run cmd/main
+```
+
+The default demo shows an allow, budget exhaustion, expiry, rejected delegation,
+an authority expansion diff, and a successful offline receipt replay. No API
+key, network service, or paid dependency is needed.
+
+Compile a permit from the compact CLI effect grammar:
+
+```bash
+moon run cmd/main -- compile docs-reader --calls 2 \
+  read-tree:docs exec:moon,test,--deny-warn
+```
+
+Check twice against a one-call grant; stdout is JSONL, one receipt per check:
+
+```bash
+moon run cmd/main -- check --calls 1 --repeat 2 \
+  read-tree:docs read:docs/guide.md
+```
+
+Other commands are `delegate`, `diff`, and `audit`. See
+[`docs/cli.md`](docs/cli.md) for the complete grammar and examples.
+
+## Library sketch
+
+```mbt check
+///|
+test {
+  let permit = @moonpermit.compile_plan("docs", [
+    @moonpermit.effect_request(
+      @moonpermit.FileRead(@moonpermit.path_tree("docs")),
+      @moonpermit.budget(max_calls=1),
+    ),
+  ])
+  let runtime = @moonpermit.runtime(permit)
+  let receipt = runtime.check(
+    "read-1",
+    @moonpermit.FileRead(@moonpermit.path_exact("docs/guide.md")),
+    0L,
+  )
+  assert_true(receipt.allowed())
+}
+```
+
+All runtime time values are explicit logical `Int64` timestamps. Expiry is
+exclusive. A finite budget is decremented only after scope, expiry, call, and
+byte checks all pass.
 
 ## Development
 
@@ -56,9 +114,16 @@ moon fmt --check
 moon info
 ```
 
-The CLI and runnable examples will be documented as soon as the first vertical
-slice lands. Until then, the repository should be treated as a transparent
-work in progress rather than a completed security product.
+Until a tagged release and clean-clone verification are complete, the
+repository should still be treated as a transparent work in progress.
+
+## Security boundary
+
+MoonPermit is an application-level reference monitor. The embedding host must
+mediate every protected operation and provide truthful typed effects and time.
+Receipts are deterministic replay evidence, not cryptographic signatures. See
+[`docs/threat-model.md`](docs/threat-model.md) and report vulnerabilities as
+described in [`SECURITY.md`](SECURITY.md).
 
 ## Open source and AI assistance
 

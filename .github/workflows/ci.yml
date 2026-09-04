@@ -36,3 +36,5 @@ jobs:
         run: moon build
       - name: CLI smoke test
         run: moon run cmd/main
+      - name: Embedding example
+        run: moon run examples/basic

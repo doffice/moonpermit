@@ -73,3 +73,16 @@ Next gate: add structural intersections and authority-expansion diffs.
 - Verified 37 tests under `--deny-warn`.
 
 Next gate: deliver a runnable CLI vertical slice and offline receipt audit.
+
+## 2026-09-04 — Runnable vertical slice and replay audit
+
+- Made receipts replay-complete with typed requests, logical time, and cost.
+- Added deterministic offline audit with sequence, permit, input, decision, and
+  accounting tamper detection.
+- Replaced the placeholder executable with `compile`, `check`, `delegate`,
+  `diff`, `audit`, and comprehensive default `demo` commands.
+- Added compact validated effect expressions and JSON/JSONL output.
+- Added a standalone no-service embedding example and CI execution step.
+- Verified every CLI command plus 43 tests under `--deny-warn`.
+
+Next gate: add property/state-machine testing, coverage, and benchmarks.
