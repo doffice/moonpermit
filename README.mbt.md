@@ -115,11 +115,12 @@ moon fmt --check
 moon info
 ```
 
-See [`docs/quality.md`](docs/quality.md) for the current 54-test result,
+See [`docs/quality.md`](docs/quality.md) for the current 55-test result,
 coverage denominators, reproducible benchmark workloads, and limitations.
 
-Until a tagged release and clean-clone verification are complete, the
-repository should still be treated as a transparent work in progress.
+The complete local gate also passes from an isolated clean clone. Until a
+tagged release and remote CI are complete, the repository should still be
+treated as a transparent pre-release.
 
 ## Security boundary
 

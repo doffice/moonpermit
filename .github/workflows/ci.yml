@@ -44,6 +44,8 @@ jobs:
     steps:
       - uses: actions/checkout@v5
       - uses: hustcer/setup-moonbit@v1
+      - name: Coverage tests
+        run: moon test --enable-coverage --deny-warn
       - name: Coverage summary
         run: moon coverage analyze -- -f summary
       - name: Release benchmarks
