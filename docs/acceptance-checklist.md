@@ -17,9 +17,9 @@ notices override any older August-specific detail.
 
 - [x] Module namespace is `doffice/moonpermit`.
 - [x] Root Apache-2.0 license exists.
-- [ ] MoonBit is the primary implementation language.
-- [ ] `moon check` and `moon test` pass.
-- [ ] `moon check --deny-warn` and `moon test --deny-warn` pass.
+- [x] MoonBit is the primary implementation language.
+- [x] `moon check` and `moon test` pass.
+- [x] `moon check --deny-warn` and `moon test --deny-warn` pass.
 - [ ] `moon fmt --check` passes.
 - [ ] `moon info` is generated and public APIs reviewed.
 - [ ] CI runs check, test, format, API drift, build, and runnable smoke test.

@@ -25,7 +25,7 @@ MoonPermit is under active development for the 2026 MoonBit September
 Hackathon. The repository starts from an empty public project, and development
 history is intentionally kept visible.
 
-Current milestone: formal effect model and executable specification tests.
+Current milestone: normalized effect scopes and executable containment tests.
 
 ## Planned workflow
 

@@ -5,3 +5,6 @@ All notable changes will be documented here.
 ## Unreleased
 
 - Initialized the MoonPermit proposal, governance, threat model, and acceptance gates.
+- Added normalized path, command, host, network, and effect scopes.
+- Added structural authority-containment checks with fail-closed mismatch reasons.
+- Added easy, intermediate, and difficult black-box specification tests.

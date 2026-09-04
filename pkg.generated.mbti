@@ -1,11 +1,99 @@
 // Generated using `moon info`, DON'T EDIT IT
 package "doffice/moonpermit"
 
+import {
+  "moonbitlang/core/debug",
+}
+
 // Values
+pub fn command_contains(CommandScope, CommandScope) -> Bool
+
+pub fn command_exact(String, Array[String]) -> CommandScope raise ScopeError
+
+pub fn command_prefix(String, Array[String]) -> CommandScope raise ScopeError
+
+pub fn effect_contains(EffectScope, EffectScope) -> Containment
+
+pub fn host_and_subdomains(String) -> HostScope raise ScopeError
+
+pub fn host_contains(HostScope, HostScope) -> Bool
+
+pub fn host_exact(String) -> HostScope raise ScopeError
+
+pub fn network_contains(NetworkScope, NetworkScope) -> Bool
+
+pub fn network_scope(HostScope, Array[String], DataClass) -> NetworkScope raise ScopeError
+
+pub fn path_contains(PathScope, PathScope) -> Bool
+
+pub fn path_exact(String) -> PathScope raise ScopeError
+
+pub fn path_tree(String) -> PathScope raise ScopeError
 
 // Errors
+pub(all) suberror ScopeError {
+  EmptyPath
+  AbsolutePath(String)
+  ParentTraversal(String)
+  AmbiguousSeparator(String)
+  EmptyProgram
+  InvalidHost(String)
+  EmptyMethodSet
+  InvalidMethod(String)
+  EmptySecret
+} derive(Eq, ToJson, @debug.Debug)
 
 // Types and methods
+pub struct CommandScope {
+  program : String
+  arguments : Array[String]
+  allow_extra_arguments : Bool
+} derive(Eq, ToJson, @debug.Debug)
+pub fn CommandScope::allows_extra_arguments(Self) -> Bool
+pub fn CommandScope::arguments(Self) -> Array[String]
+pub fn CommandScope::program(Self) -> String
+
+pub(all) enum Containment {
+  Contained
+  NotContained(reason~ : String)
+} derive(Eq, ToJson, @debug.Debug)
+
+pub(all) enum DataClass {
+  Public
+  Internal
+  Confidential
+  Secret
+} derive(Eq, ToJson, @debug.Debug)
+
+pub(all) enum EffectScope {
+  FileRead(PathScope)
+  FileWrite(PathScope)
+  FileDelete(PathScope)
+  ProcessExec(CommandScope)
+  NetworkSend(NetworkScope)
+  SecretRead(String)
+} derive(Eq, ToJson, @debug.Debug)
+pub fn EffectScope::canonical(Self) -> String
+
+pub struct HostScope {
+  canonical : String
+  subdomains : Bool
+} derive(Eq, ToJson, @debug.Debug)
+pub fn HostScope::canonical(Self) -> String
+pub fn HostScope::includes_subdomains(Self) -> Bool
+
+pub struct NetworkScope {
+  host : HostScope
+  methods : Array[String]
+  max_data_class : DataClass
+} derive(Eq, ToJson, @debug.Debug)
+
+pub struct PathScope {
+  canonical : String
+  tree : Bool
+} derive(Eq, ToJson, @debug.Debug)
+pub fn PathScope::canonical(Self) -> String
+pub fn PathScope::is_tree(Self) -> Bool
 
 // Type aliases
 
