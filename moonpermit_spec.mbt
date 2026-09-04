@@ -208,444 +208,285 @@ pub struct Runtime {
 
 ///|
 /// Build an exact repository-relative path scope.
-#declaration_only
-pub fn path_exact(input : String) -> PathScope raise ScopeError {
-  ...
-}
+declare pub fn path_exact(input : String) -> PathScope raise ScopeError
 
 ///|
 /// Build a tree scope containing a directory and all of its descendants.
 ///
 /// `path_tree(".")` represents the entire repository tree.
-#declaration_only
-pub fn path_tree(input : String) -> PathScope raise ScopeError {
-  ...
-}
+declare pub fn path_tree(input : String) -> PathScope raise ScopeError
 
 ///|
 /// Return the stable external form, such as `docs/guide.md` or `docs/**`.
-#declaration_only
-pub fn PathScope::canonical(self : PathScope) -> String {
-  ...
-}
+declare pub fn PathScope::canonical(self : PathScope) -> String
 
 ///|
 /// Whether this path represents a tree rather than one exact resource.
-#declaration_only
-pub fn PathScope::is_tree(self : PathScope) -> Bool {
-  ...
-}
+declare pub fn PathScope::is_tree(self : PathScope) -> Bool
 
 ///|
 /// Test whether every resource in `requested` is covered by `grant`.
-#declaration_only
-pub fn path_contains(grant : PathScope, requested : PathScope) -> Bool {
-  ...
-}
+declare pub fn path_contains(grant : PathScope, requested : PathScope) -> Bool
 
 ///|
 /// Authorize exactly one shell-free executable invocation.
-#declaration_only
-pub fn command_exact(
+declare pub fn command_exact(
   program : String,
   arguments : Array[String],
-) -> CommandScope raise ScopeError {
-  ...
-}
+) -> CommandScope raise ScopeError
 
 ///|
 /// Authorize invocations beginning with a fixed executable and argument prefix.
-#declaration_only
-pub fn command_prefix(
+declare pub fn command_prefix(
   program : String,
   arguments : Array[String],
-) -> CommandScope raise ScopeError {
-  ...
-}
+) -> CommandScope raise ScopeError
 
 ///|
 /// Return the exact executable name.
-#declaration_only
-pub fn CommandScope::program(self : CommandScope) -> String {
-  ...
-}
+declare pub fn CommandScope::program(self : CommandScope) -> String
 
 ///|
 /// Return a defensive copy of the fixed argument portion.
-#declaration_only
-pub fn CommandScope::arguments(self : CommandScope) -> Array[String] {
-  ...
-}
+declare pub fn CommandScope::arguments(self : CommandScope) -> Array[String]
 
 ///|
 /// Whether additional arguments are allowed after the fixed prefix.
-#declaration_only
-pub fn CommandScope::allows_extra_arguments(self : CommandScope) -> Bool {
-  ...
-}
+declare pub fn CommandScope::allows_extra_arguments(self : CommandScope) -> Bool
 
 ///|
 /// Test whether every invocation in `requested` is covered by `grant`.
-#declaration_only
-pub fn command_contains(grant : CommandScope, requested : CommandScope) -> Bool {
-  ...
-}
+declare pub fn command_contains(
+  grant : CommandScope,
+  requested : CommandScope,
+) -> Bool
 
 ///|
 /// Build an exact DNS host scope.
-#declaration_only
-pub fn host_exact(input : String) -> HostScope raise ScopeError {
-  ...
-}
+declare pub fn host_exact(input : String) -> HostScope raise ScopeError
 
 ///|
 /// Build a host scope containing the apex and its subdomains.
-#declaration_only
-pub fn host_and_subdomains(input : String) -> HostScope raise ScopeError {
-  ...
-}
+declare pub fn host_and_subdomains(input : String) -> HostScope raise ScopeError
 
 ///|
 /// Return the normalized lowercase host form.
-#declaration_only
-pub fn HostScope::canonical(self : HostScope) -> String {
-  ...
-}
+declare pub fn HostScope::canonical(self : HostScope) -> String
 
 ///|
 /// Whether the apex scope includes subdomains.
-#declaration_only
-pub fn HostScope::includes_subdomains(self : HostScope) -> Bool {
-  ...
-}
+declare pub fn HostScope::includes_subdomains(self : HostScope) -> Bool
 
 ///|
 /// Test whether every host in `requested` is covered by `grant`.
-#declaration_only
-pub fn host_contains(grant : HostScope, requested : HostScope) -> Bool {
-  ...
-}
+declare pub fn host_contains(grant : HostScope, requested : HostScope) -> Bool
 
 ///|
 /// Build a normalized network scope.
-#declaration_only
-pub fn network_scope(
+declare pub fn network_scope(
   host : HostScope,
   methods : Array[String],
   max_data_class : DataClass,
-) -> NetworkScope raise ScopeError {
-  ...
-}
+) -> NetworkScope raise ScopeError
 
 ///|
 /// Test whether every network action in `requested` is covered by `grant`.
-#declaration_only
-pub fn network_contains(grant : NetworkScope, requested : NetworkScope) -> Bool {
-  ...
-}
+declare pub fn network_contains(
+  grant : NetworkScope,
+  requested : NetworkScope,
+) -> Bool
 
 ///|
 /// Compare arbitrary effect scopes using fail-closed structural rules.
-#declaration_only
-pub fn effect_contains(
+declare pub fn effect_contains(
   grant : EffectScope,
   requested : EffectScope,
-) -> Containment {
-  ...
-}
+) -> Containment
 
 ///|
 /// Return the greatest scope represented by both inputs, or `None` when their
 /// effect sets are disjoint.
-#declaration_only
-pub fn effect_intersection(
+declare pub fn effect_intersection(
   left : EffectScope,
   right : EffectScope,
-) -> EffectScope? {
-  ...
-}
+) -> EffectScope?
 
 ///|
 /// Produce a deterministic string used by planners and audit reports.
-#declaration_only
-pub fn EffectScope::canonical(self : EffectScope) -> String {
-  ...
-}
+declare pub fn EffectScope::canonical(self : EffectScope) -> String
 
 ///|
 /// Construct a validated budget. Omitted fields are unbounded.
-#declaration_only
-pub fn budget(
+declare pub fn budget(
   max_calls? : Int,
   max_bytes? : Int64,
   expires_at? : Int64,
-) -> Budget raise PermitError {
-  ...
-}
+) -> Budget raise PermitError
 
 ///|
 /// Construct an unbounded budget.
-#declaration_only
-pub fn unlimited_budget() -> Budget {
-  ...
-}
+declare pub fn unlimited_budget() -> Budget
 
 ///|
 /// Return the call limit, or `None` when unbounded.
-#declaration_only
-pub fn Budget::max_calls(self : Budget) -> Int? {
-  ...
-}
+declare pub fn Budget::max_calls(self : Budget) -> Int?
 
 ///|
 /// Return the byte limit, or `None` when unbounded.
-#declaration_only
-pub fn Budget::max_bytes(self : Budget) -> Int64? {
-  ...
-}
+declare pub fn Budget::max_bytes(self : Budget) -> Int64?
 
 ///|
 /// Return the exclusive logical expiry, or `None` when unbounded.
-#declaration_only
-pub fn Budget::expires_at(self : Budget) -> Int64? {
-  ...
-}
+declare pub fn Budget::expires_at(self : Budget) -> Int64?
 
 ///|
 /// Whether every resource allowed by `requested` is covered by `grant`.
-#declaration_only
-pub fn budget_contains(grant : Budget, requested : Budget) -> Bool {
-  ...
-}
+declare pub fn budget_contains(grant : Budget, requested : Budget) -> Bool
 
 ///|
 /// Combine two simultaneous budget constraints by taking each tighter limit.
-#declaration_only
-pub fn budget_intersection(left : Budget, right : Budget) -> Budget {
-  ...
-}
+declare pub fn budget_intersection(left : Budget, right : Budget) -> Budget
 
 ///|
 /// Build one plan request.
-#declaration_only
-pub fn effect_request(effect : EffectScope, budget : Budget) -> EffectRequest {
-  ...
-}
+declare pub fn effect_request(
+  effect : EffectScope,
+  budget : Budget,
+) -> EffectRequest
 
 ///|
 /// Return the requested effect.
-#declaration_only
-pub fn EffectRequest::effect(self : EffectRequest) -> EffectScope {
-  ...
-}
+declare pub fn EffectRequest::effect(self : EffectRequest) -> EffectScope
 
 ///|
 /// Return the requested budget.
-#declaration_only
-pub fn EffectRequest::budget(self : EffectRequest) -> Budget {
-  ...
-}
+declare pub fn EffectRequest::budget(self : EffectRequest) -> Budget
 
 ///|
 /// Compile, sort, and exactly deduplicate a structured plan.
-#declaration_only
-pub fn compile_plan(
+declare pub fn compile_plan(
   permit_id : String,
   requests : Array[EffectRequest],
-) -> Permit raise PermitError {
-  ...
-}
+) -> Permit raise PermitError
 
 ///|
 /// Return the permit identifier.
-#declaration_only
-pub fn Permit::id(self : Permit) -> String {
-  ...
-}
+declare pub fn Permit::id(self : Permit) -> String
 
 ///|
 /// Return a defensive copy of the normalized grants.
-#declaration_only
-pub fn Permit::grants(self : Permit) -> Array[Grant] {
-  ...
-}
+declare pub fn Permit::grants(self : Permit) -> Array[Grant]
 
 ///|
 /// Return the number of normalized grants.
-#declaration_only
-pub fn Permit::grant_count(self : Permit) -> Int {
-  ...
-}
+declare pub fn Permit::grant_count(self : Permit) -> Int
 
 ///|
 /// Produce a deterministic, human-readable permit representation.
-#declaration_only
-pub fn Permit::canonical(self : Permit) -> String {
-  ...
-}
+declare pub fn Permit::canonical(self : Permit) -> String
 
 ///|
 /// Return the generated grant identifier.
-#declaration_only
-pub fn Grant::id(self : Grant) -> String {
-  ...
-}
+declare pub fn Grant::id(self : Grant) -> String
 
 ///|
 /// Return the effect scope held by this grant.
-#declaration_only
-pub fn Grant::effect(self : Grant) -> EffectScope {
-  ...
-}
+declare pub fn Grant::effect(self : Grant) -> EffectScope
 
 ///|
 /// Return the grant budget.
-#declaration_only
-pub fn Grant::budget(self : Grant) -> Budget {
-  ...
-}
+declare pub fn Grant::budget(self : Grant) -> Budget
 
 ///|
 /// Whether one grant covers another grant.
-#declaration_only
-pub fn grant_contains(grant : Grant, requested : Grant) -> Bool {
-  ...
-}
+declare pub fn grant_contains(grant : Grant, requested : Grant) -> Bool
 
 ///|
 /// Whether every grant in `requested` is covered by `grant`.
-#declaration_only
-pub fn permit_contains(grant : Permit, requested : Permit) -> Bool {
-  ...
-}
+declare pub fn permit_contains(grant : Permit, requested : Permit) -> Bool
 
 ///|
 /// Compare a requested permit with an existing approval.
-#declaration_only
-pub fn diff_permits(approved : Permit, requested : Permit) -> PermitDiff {
-  ...
-}
+declare pub fn diff_permits(approved : Permit, requested : Permit) -> PermitDiff
 
 ///|
 /// Return diff entries in canonical requested-grant order.
-#declaration_only
-pub fn PermitDiff::entries(self : PermitDiff) -> Array[DiffEntry] {
-  ...
-}
+declare pub fn PermitDiff::entries(self : PermitDiff) -> Array[DiffEntry]
 
 ///|
 /// Whether at least one requested grant expands authority.
-#declaration_only
-pub fn PermitDiff::requires_approval(self : PermitDiff) -> Bool {
-  ...
-}
+declare pub fn PermitDiff::requires_approval(self : PermitDiff) -> Bool
 
 ///|
 /// Render a stable line-oriented explanation suitable for review.
-#declaration_only
-pub fn PermitDiff::render(self : PermitDiff) -> String {
-  ...
-}
+declare pub fn PermitDiff::render(self : PermitDiff) -> String
 
 ///|
 /// Start an isolated runtime with fresh counters for one permit.
-#declaration_only
-pub fn runtime(permit : Permit) -> Runtime {
-  ...
-}
+declare pub fn runtime(permit : Permit) -> Runtime
 
 ///|
 /// Check and, when allowed, consume one concrete effect invocation.
 ///
 /// `now` is an explicit logical timestamp. Expiry is exclusive.
-#declaration_only
-pub fn Runtime::check(
+declare pub fn Runtime::check(
   self : Runtime,
   invocation_id : String,
   requested : EffectScope,
   now : Int64,
   byte_cost? : Int64 = 0L,
-) -> Receipt raise PermitError {
-  ...
-}
+) -> Receipt raise PermitError
 
 ///|
 /// Return the permit identifier attached to this runtime.
-#declaration_only
-pub fn Runtime::permit_id(self : Runtime) -> String {
-  ...
-}
+declare pub fn Runtime::permit_id(self : Runtime) -> String
 
 ///|
 /// Return the number of decisions emitted, including denials.
-#declaration_only
-pub fn Runtime::receipt_count(self : Runtime) -> Int {
-  ...
-}
+declare pub fn Runtime::receipt_count(self : Runtime) -> Int
 
 ///|
 /// Return a defensive copy of all receipts in sequence order.
-#declaration_only
-pub fn Runtime::receipts(self : Runtime) -> Array[Receipt] {
-  ...
-}
+declare pub fn Runtime::receipts(self : Runtime) -> Array[Receipt]
 
 ///|
 /// Return the current budget for a grant identifier.
-#declaration_only
-pub fn Runtime::remaining_budget(self : Runtime, grant_id : String) -> Budget? {
-  ...
-}
+declare pub fn Runtime::remaining_budget(
+  self : Runtime,
+  grant_id : String,
+) -> Budget?
 
 ///|
 /// Issue a child permit by reserving its finite budgets from this runtime.
 ///
 /// The operation is transactional: any unsupported child grant leaves every
 /// parent counter unchanged. `now` is used to reject expired parent grants.
-#declaration_only
-pub fn Runtime::delegate(
+declare pub fn Runtime::delegate(
   self : Runtime,
   child_id : String,
   requests : Array[EffectRequest],
   now : Int64,
-) -> Permit raise PermitError {
-  ...
-}
+) -> Permit raise PermitError
 
 ///|
 /// Convenience predicate for an allow receipt.
-#declaration_only
-pub fn Receipt::allowed(self : Receipt) -> Bool {
-  ...
-}
+declare pub fn Receipt::allowed(self : Receipt) -> Bool
 
 ///|
 /// Replay receipts from a fresh permit and detect inconsistent evidence.
-#declaration_only
-pub fn audit_receipts(
+declare pub fn audit_receipts(
   permit : Permit,
   receipts : Array[Receipt],
-) -> AuditReport {
-  ...
-}
+) -> AuditReport
 
 ///|
 /// Whether every supplied receipt exactly matches deterministic replay.
-#declaration_only
-pub fn AuditReport::passed(self : AuditReport) -> Bool {
-  ...
-}
+declare pub fn AuditReport::passed(self : AuditReport) -> Bool
 
 ///|
 /// Return the number of replayed receipts.
-#declaration_only
-pub fn AuditReport::checked(self : AuditReport) -> Int {
-  ...
-}
+declare pub fn AuditReport::checked(self : AuditReport) -> Int
 
 ///|
 /// Return a defensive copy of all findings.
-#declaration_only
-pub fn AuditReport::findings(self : AuditReport) -> Array[AuditFinding] {
-  ...
-}
+declare pub fn AuditReport::findings(self : AuditReport) -> Array[AuditFinding]

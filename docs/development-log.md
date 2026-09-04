@@ -86,3 +86,16 @@ Next gate: deliver a runnable CLI vertical slice and offline receipt audit.
 - Verified every CLI command plus 43 tests under `--deny-warn`.
 
 Next gate: add property/state-machine testing, coverage, and benchmarks.
+
+## 2026-09-04 — Quality and toolchain-compatibility milestone
+
+- Added bounded algebra properties and runtime/delegation state machines.
+- Migrated the formal contract from legacy `#declaration_only` blocks to the
+  current bodyless `declare` syntax after coverage exposed the incompatibility.
+- Raised the suite to 54 passing tests under `--deny-warn`.
+- Measured 486/514 core coverage points (94.6%) and transparently recorded the
+  lower 547/784 all-source result (69.8%) caused by executable adapters.
+- Added deterministic release benchmarks for compile, check, and audit paths.
+- Added an Ubuntu CI quality job for coverage and release benchmarks.
+
+Next gate: final repository audit, clean-clone verification, and remote CI.

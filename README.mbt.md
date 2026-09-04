@@ -45,6 +45,7 @@ structured plan -> compile minimum permit -> approve once
 - `docs/threat-model.md`: security claims and explicit non-claims.
 - `docs/acceptance-checklist.md`: continuously maintained release gate.
 - `docs/development-log.md`: dated, public development record.
+- `docs/quality.md`: reproducible strict gate, coverage, and benchmarks.
 - `docs/cli.md`: command reference and effect-expression grammar.
 - `examples/basic`: dependency-free end-to-end embedding example.
 - `cmd/main`: runnable CLI package.
@@ -113,6 +114,9 @@ moon test --deny-warn
 moon fmt --check
 moon info
 ```
+
+See [`docs/quality.md`](docs/quality.md) for the current 54-test result,
+coverage denominators, reproducible benchmark workloads, and limitations.
 
 Until a tagged release and clean-clone verification are complete, the
 repository should still be treated as a transparent work in progress.

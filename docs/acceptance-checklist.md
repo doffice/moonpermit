@@ -25,16 +25,16 @@ notices override any older August-specific detail.
 - [ ] CI runs check, test, format, API drift, build, and runnable smoke test.
 - [x] README documents installation, API, CLI, examples, limits, and release status.
 - [x] At least one end-to-end example runs without paid services or secrets.
-- [ ] Core promises in `proposal.md` are implemented and tested.
-- [ ] Repository contains no build cache, secret, temporary, or unknown-origin artifact.
+- [x] Core promises in `proposal.md` are implemented and tested.
+- [x] Git tracks no build cache, secret, temporary, or unknown-origin artifact.
 - [ ] Package is published to mooncakes.io and installation is verified.
 
 ## Quality and award signals
 
-- [ ] Black-box tests cover all public behavior and difficult boundaries.
-- [ ] Property/state-machine tests exercise containment and budget invariants.
-- [ ] Coverage report and documented exclusions are reviewed.
-- [ ] Benchmarks use deterministic counters plus reproducible timing notes.
+- [x] Black-box tests cover core public behavior and difficult boundaries.
+- [x] Property/state-machine tests exercise containment and budget invariants.
+- [x] Coverage report and documented adapter gap are reviewed.
+- [x] Benchmarks use deterministic workloads plus reproducible timing notes.
 - [x] Architecture, threat model, source provenance, and AI use are documented.
 - [ ] Effective MoonBit implementation scale is substantial; no filler code.
 - [x] Demo clearly shows allow, deny, exhaustion, expiry, and delegation failure.

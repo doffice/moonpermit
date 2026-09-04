@@ -38,3 +38,13 @@ jobs:
         run: moon run cmd/main
       - name: Embedding example
         run: moon run examples/basic
+
+  quality:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: hustcer/setup-moonbit@v1
+      - name: Coverage summary
+        run: moon coverage analyze -- -f summary
+      - name: Release benchmarks
+        run: moon bench --release --deny-warn
