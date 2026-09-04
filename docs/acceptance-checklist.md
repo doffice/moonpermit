@@ -36,13 +36,13 @@ notices override any older August-specific detail.
 - [x] Coverage report and documented adapter gap are reviewed.
 - [x] Benchmarks use deterministic workloads plus reproducible timing notes.
 - [x] Architecture, threat model, source provenance, and AI use are documented.
-- [ ] Effective MoonBit implementation scale is substantial; no filler code.
+- [x] Effective MoonBit implementation scale is substantial; no filler code.
 - [x] Demo clearly shows allow, deny, exhaustion, expiry, and delegation failure.
 
 ## Final manual checks
 
 - [ ] Verify the remote default branch and that all work is visible there.
 - [ ] Verify repository owner, primary contributor, and applicant relationship.
-- [ ] Re-run the documented commands in a clean clone.
+- [x] Re-run the documented commands in a clean clone.
 - [ ] Confirm official September submission fields and deadline against current notice.
 - [ ] Record a short demonstration and prepare a technical explanation.

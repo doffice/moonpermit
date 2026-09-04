@@ -101,3 +101,17 @@ Next gate: add property/state-machine testing, coverage, and benchmarks.
   preserve broader authority by consuming the tightest usable grant first.
 
 Next gate: final repository audit, clean-clone verification, and remote CI.
+
+## 2026-09-04 — Local acceptance milestone
+
+- Passed the complete strict gate with 55/55 tests, a clean API generation
+  diff, the built-in audit workflow, and the standalone embedding example.
+- Repeated the gate from an isolated local clone to prove the build does not
+  depend on ignored or untracked workspace files.
+- Reviewed all tracked paths, confirmed `_build/` remains ignored, and scanned
+  the source tree for common private-key and access-token signatures.
+- Recorded a transparent 3,611-line MoonBit source breakdown: 1,725
+  implementation/example, 1,394 test/benchmark, and 492 contract lines.
+
+Next gate: publish `main`, observe remote CI, then complete owner-only event
+registration, group membership, and rolling eligibility review.

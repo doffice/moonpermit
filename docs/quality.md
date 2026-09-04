@@ -20,6 +20,12 @@ Current result: 55 tests pass. Tests are black-box unless an executable-only
 parser requires a white-box package test. The suite includes easy,
 intermediate, difficult-boundary, bounded-property, and state-machine cases.
 
+The reviewed MoonBit source snapshot contains 1,725 implementation/example
+lines, 1,394 test/benchmark lines, and 492 declarative contract lines (3,611
+total). Generated interfaces and build output are excluded. These categories
+are reported separately so test or declaration volume cannot masquerade as
+implementation scale; no filler was added to reach a line-count target.
+
 The bounded properties cover containment reflexivity and transitivity,
 intersection commutativity/lower bounds, exact finite-call consumption,
 denial non-consumption, replay behavior, audit replay, and conservation of
