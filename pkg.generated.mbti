@@ -6,13 +6,23 @@ import {
 }
 
 // Values
+pub fn budget(max_calls? : Int, max_bytes? : Int64, expires_at? : Int64) -> Budget raise PermitError
+
+pub fn budget_contains(Budget, Budget) -> Bool
+
 pub fn command_contains(CommandScope, CommandScope) -> Bool
 
 pub fn command_exact(String, Array[String]) -> CommandScope raise ScopeError
 
 pub fn command_prefix(String, Array[String]) -> CommandScope raise ScopeError
 
+pub fn compile_plan(String, Array[EffectRequest]) -> Permit raise PermitError
+
 pub fn effect_contains(EffectScope, EffectScope) -> Containment
+
+pub fn effect_request(EffectScope, Budget) -> EffectRequest
+
+pub fn grant_contains(Grant, Grant) -> Bool
 
 pub fn host_and_subdomains(String) -> HostScope raise ScopeError
 
@@ -30,7 +40,19 @@ pub fn path_exact(String) -> PathScope raise ScopeError
 
 pub fn path_tree(String) -> PathScope raise ScopeError
 
+pub fn permit_contains(Permit, Permit) -> Bool
+
+pub fn unlimited_budget() -> Budget
+
 // Errors
+pub(all) suberror PermitError {
+  EmptyPermitId
+  EmptyPlan
+  InvalidCallLimit(Int)
+  InvalidByteLimit(Int64)
+  InvalidExpiry(Int64)
+} derive(Eq, ToJson, @debug.Debug)
+
 pub(all) suberror ScopeError {
   EmptyPath
   AbsolutePath(String)
@@ -44,6 +66,15 @@ pub(all) suberror ScopeError {
 } derive(Eq, ToJson, @debug.Debug)
 
 // Types and methods
+pub struct Budget {
+  max_calls : Int?
+  max_bytes : Int64?
+  expires_at : Int64?
+} derive(Eq, ToJson, @debug.Debug)
+pub fn Budget::expires_at(Self) -> Int64?
+pub fn Budget::max_bytes(Self) -> Int64?
+pub fn Budget::max_calls(Self) -> Int?
+
 pub struct CommandScope {
   program : String
   arguments : Array[String]
@@ -65,6 +96,13 @@ pub(all) enum DataClass {
   Secret
 } derive(Eq, ToJson, @debug.Debug)
 
+pub struct EffectRequest {
+  effect : EffectScope
+  budget : Budget
+} derive(Eq, ToJson, @debug.Debug)
+pub fn EffectRequest::budget(Self) -> Budget
+pub fn EffectRequest::effect(Self) -> EffectScope
+
 pub(all) enum EffectScope {
   FileRead(PathScope)
   FileWrite(PathScope)
@@ -74,6 +112,15 @@ pub(all) enum EffectScope {
   SecretRead(String)
 } derive(Eq, ToJson, @debug.Debug)
 pub fn EffectScope::canonical(Self) -> String
+
+pub struct Grant {
+  id : String
+  effect : EffectScope
+  budget : Budget
+} derive(Eq, ToJson, @debug.Debug)
+pub fn Grant::budget(Self) -> Budget
+pub fn Grant::effect(Self) -> EffectScope
+pub fn Grant::id(Self) -> String
 
 pub struct HostScope {
   canonical : String
@@ -94,6 +141,15 @@ pub struct PathScope {
 } derive(Eq, ToJson, @debug.Debug)
 pub fn PathScope::canonical(Self) -> String
 pub fn PathScope::is_tree(Self) -> Bool
+
+pub struct Permit {
+  id : String
+  grants : Array[Grant]
+} derive(Eq, ToJson, @debug.Debug)
+pub fn Permit::canonical(Self) -> String
+pub fn Permit::grant_count(Self) -> Int
+pub fn Permit::grants(Self) -> Array[Grant]
+pub fn Permit::id(Self) -> String
 
 // Type aliases
 

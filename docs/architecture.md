@@ -30,9 +30,16 @@ Unknown, malformed, or incomparable constraints fail closed.
 
 ## Minimum permit compilation
 
-The planner normalizes equivalent scopes, removes grants covered by broader
-grants of the same effect kind, and merges compatible budgets without changing
-meaning. Canonical ordering makes output and tests deterministic.
+The planner normalizes and sorts scopes, then merges exact duplicates without
+changing their authority meaning. Canonical ordering makes output and tests
+deterministic.
+
+The first milestone deliberately deduplicates only identical effect scopes.
+Removing a narrower scope beneath a broader scope can accidentally transfer its
+budget to unrelated resources, so that optimization is deferred until its
+budget algebra is specified and tested. For duplicate scopes, the compiler
+takes the least common ceiling of each limit; an unbounded declaration remains
+unbounded.
 
 ## Delegation
 

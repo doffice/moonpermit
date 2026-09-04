@@ -74,6 +74,46 @@ pub(all) enum Containment {
 } derive(Eq, Debug, ToJson)
 
 ///|
+/// Optional limits attached to one effect grant. `None` means unbounded.
+pub struct Budget {
+  max_calls : Int?
+  max_bytes : Int64?
+  expires_at : Int64?
+} derive(Eq, Debug, ToJson)
+
+///|
+/// One requested effect and its intended resource budget.
+pub struct EffectRequest {
+  effect : EffectScope
+  budget : Budget
+} derive(Eq, Debug, ToJson)
+
+///|
+/// One normalized permit entry.
+pub struct Grant {
+  id : String
+  effect : EffectScope
+  budget : Budget
+} derive(Eq, Debug, ToJson)
+
+///|
+/// A deterministic set of grants approved for one plan.
+pub struct Permit {
+  id : String
+  grants : Array[Grant]
+} derive(Eq, Debug, ToJson)
+
+///|
+/// Invalid permit, budget, or plan input.
+pub(all) suberror PermitError {
+  EmptyPermitId
+  EmptyPlan
+  InvalidCallLimit(Int)
+  InvalidByteLimit(Int64)
+  InvalidExpiry(Int64)
+} derive(Eq, Debug, ToJson)
+
+///|
 /// Build an exact repository-relative path scope.
 #declaration_only
 pub fn path_exact(input : String) -> PathScope raise ScopeError {
@@ -225,5 +265,145 @@ pub fn effect_contains(
 /// Produce a deterministic string used by planners and audit reports.
 #declaration_only
 pub fn EffectScope::canonical(self : EffectScope) -> String {
+  ...
+}
+
+///|
+/// Construct a validated budget. Omitted fields are unbounded.
+#declaration_only
+pub fn budget(
+  max_calls? : Int,
+  max_bytes? : Int64,
+  expires_at? : Int64,
+) -> Budget raise PermitError {
+  ...
+}
+
+///|
+/// Construct an unbounded budget.
+#declaration_only
+pub fn unlimited_budget() -> Budget {
+  ...
+}
+
+///|
+/// Return the call limit, or `None` when unbounded.
+#declaration_only
+pub fn Budget::max_calls(self : Budget) -> Int? {
+  ...
+}
+
+///|
+/// Return the byte limit, or `None` when unbounded.
+#declaration_only
+pub fn Budget::max_bytes(self : Budget) -> Int64? {
+  ...
+}
+
+///|
+/// Return the exclusive logical expiry, or `None` when unbounded.
+#declaration_only
+pub fn Budget::expires_at(self : Budget) -> Int64? {
+  ...
+}
+
+///|
+/// Whether every resource allowed by `requested` is covered by `grant`.
+#declaration_only
+pub fn budget_contains(grant : Budget, requested : Budget) -> Bool {
+  ...
+}
+
+///|
+/// Build one plan request.
+#declaration_only
+pub fn effect_request(effect : EffectScope, budget : Budget) -> EffectRequest {
+  ...
+}
+
+///|
+/// Return the requested effect.
+#declaration_only
+pub fn EffectRequest::effect(self : EffectRequest) -> EffectScope {
+  ...
+}
+
+///|
+/// Return the requested budget.
+#declaration_only
+pub fn EffectRequest::budget(self : EffectRequest) -> Budget {
+  ...
+}
+
+///|
+/// Compile, sort, and exactly deduplicate a structured plan.
+#declaration_only
+pub fn compile_plan(
+  permit_id : String,
+  requests : Array[EffectRequest],
+) -> Permit raise PermitError {
+  ...
+}
+
+///|
+/// Return the permit identifier.
+#declaration_only
+pub fn Permit::id(self : Permit) -> String {
+  ...
+}
+
+///|
+/// Return a defensive copy of the normalized grants.
+#declaration_only
+pub fn Permit::grants(self : Permit) -> Array[Grant] {
+  ...
+}
+
+///|
+/// Return the number of normalized grants.
+#declaration_only
+pub fn Permit::grant_count(self : Permit) -> Int {
+  ...
+}
+
+///|
+/// Produce a deterministic, human-readable permit representation.
+#declaration_only
+pub fn Permit::canonical(self : Permit) -> String {
+  ...
+}
+
+///|
+/// Return the generated grant identifier.
+#declaration_only
+pub fn Grant::id(self : Grant) -> String {
+  ...
+}
+
+///|
+/// Return the effect scope held by this grant.
+#declaration_only
+pub fn Grant::effect(self : Grant) -> EffectScope {
+  ...
+}
+
+///|
+/// Return the grant budget.
+#declaration_only
+pub fn Grant::budget(self : Grant) -> Budget {
+  ...
+}
+
+///|
+/// Whether one grant covers another grant.
+#declaration_only
+pub fn grant_contains(grant : Grant, requested : Grant) -> Bool {
+  ...
+}
+
+///|
+/// Whether every grant in `requested` is covered by `grant`.
+#declaration_only
+pub fn permit_contains(grant : Permit, requested : Permit) -> Bool {
   ...
 }

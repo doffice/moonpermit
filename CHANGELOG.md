@@ -8,3 +8,5 @@ All notable changes will be documented here.
 - Added normalized path, command, host, network, and effect scopes.
 - Added structural authority-containment checks with fail-closed mismatch reasons.
 - Added easy, intermediate, and difficult black-box specification tests.
+- Added budget validation, plan compilation, exact-scope deduplication, and
+  permit containment.

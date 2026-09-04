@@ -23,3 +23,15 @@ Next gate: implement and test the formal effect/scope contract.
 - Verified `moon check --deny-warn` and `moon test --deny-warn`.
 
 Next gate: add permit compilation, budgets, runtime consumption, and delegation.
+
+## 2026-09-04 — Permit compiler milestone
+
+- Added validated optional call, byte, and logical-expiry budgets.
+- Defined budget containment with explicit unbounded semantics.
+- Added deterministic plan sorting, exact-effect deduplication, and generated
+  grant identifiers.
+- Kept scope minimization conservative where merging could redistribute budget.
+- Added permit/grant containment and six new black-box tests.
+- Verified 16 tests under `--deny-warn`.
+
+Next gate: consume budgets at runtime and emit deterministic receipts.
