@@ -18,5 +18,7 @@ All notable changes will be documented here.
   diffs that isolate authority requiring new approval.
 - Added replay-complete receipts, offline audit, a validated effect DSL, five
   CLI workflows, a comprehensive demo, and a standalone embedding example.
-- Added bounded property/state-machine tests, 94.6% measured core coverage,
+- Added bounded property/state-machine tests, 95.0% measured core coverage,
   reproducible release benchmarks, and current `declare` contract syntax.
+- Runtime authorization now consumes the tightest usable overlapping grant so
+  broader authority remains available for effects that require it.

@@ -64,9 +64,12 @@ fn reason_message(reason : ReasonCode) -> String {
   match reason {
     Granted => "effect is covered and its budget was consumed"
     NoMatchingGrant => "no grant contains the requested effect"
-    PermitExpired => "every matching grant is expired"
-    CallBudgetExhausted => "every matching grant has no calls remaining"
-    ByteBudgetExhausted => "every matching grant has insufficient bytes"
+    PermitExpired =>
+      "a matching grant is expired and no usable alternative exists"
+    CallBudgetExhausted =>
+      "a matching grant has no calls remaining and no usable alternative exists"
+    ByteBudgetExhausted =>
+      "a matching grant has insufficient bytes and no usable alternative exists"
     DuplicateInvocation => "invocation identifier has already been checked"
   }
 }
@@ -108,7 +111,8 @@ pub fn Runtime::check(
   let mut denial_grant : String? = None
   let mut denial_calls : Int? = None
   let mut denial_bytes : Int64? = None
-  for state in self.states {
+  let mut candidate : Int? = None
+  for index, state in self.states {
     if effect_contains(state.grant.effect, requested) is Containment::Contained {
       let expired = match state.grant.budget.expires_at {
         Some(expiry) => now >= expiry
@@ -138,6 +142,21 @@ pub fn Runtime::check(
         }
         continue
       }
+      match candidate {
+        None => candidate = Some(index)
+        Some(current) =>
+          if candidate_is_tighter(state, self.states[current]) {
+            candidate = Some(index)
+          }
+      }
+      if state.grant.effect == requested {
+        break
+      }
+    }
+  }
+  match candidate {
+    Some(index) => {
+      let state = self.states[index]
       match state.remaining_calls {
         Some(remaining) => state.remaining_calls = Some(remaining - 1)
         None => ()
@@ -159,6 +178,7 @@ pub fn Runtime::check(
         state.remaining_bytes,
       )
     }
+    None => ()
   }
   self.emit(
     id,

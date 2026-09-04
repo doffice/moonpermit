@@ -54,6 +54,35 @@ test "runtime selects another usable grant after an exhausted match" {
 }
 
 ///|
+test "runtime preserves broad authority by consuming the tightest grant first" {
+  let narrow = @moonpermit.effect_request(
+    @moonpermit.FileRead(@moonpermit.path_exact("docs/guide.md")),
+    @moonpermit.budget(max_calls=1),
+  )
+  let broad = @moonpermit.effect_request(
+    @moonpermit.FileRead(@moonpermit.path_tree("docs")),
+    @moonpermit.budget(max_calls=1),
+  )
+  let runtime = @moonpermit.runtime(
+    @moonpermit.compile_plan("tightest-runtime", [narrow, broad]),
+  )
+  let exact = runtime.check(
+    "exact",
+    @moonpermit.FileRead(@moonpermit.path_exact("docs/guide.md")),
+    1L,
+  )
+  let sibling = runtime.check(
+    "sibling",
+    @moonpermit.FileRead(@moonpermit.path_exact("docs/other.md")),
+    2L,
+  )
+  assert_true(exact.allowed())
+  assert_true(sibling.allowed())
+  assert_eq(exact.grant_id, Some("grant-2"))
+  assert_eq(sibling.grant_id, Some("grant-1"))
+}
+
+///|
 test "invalid runtime metadata fails before producing a receipt" {
   let runtime = @moonpermit.runtime(
     @moonpermit.compile_plan("validation", [

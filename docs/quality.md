@@ -16,7 +16,7 @@ moon run cmd/main
 moon run examples/basic
 ```
 
-Current result: 54 tests pass. Tests are black-box unless an executable-only
+Current result: 55 tests pass. Tests are black-box unless an executable-only
 parser requires a white-box package test. The suite includes easy,
 intermediate, difficult-boundary, bounded-property, and state-machine cases.
 
@@ -24,6 +24,10 @@ The bounded properties cover containment reflexivity and transitivity,
 intersection commutativity/lower bounds, exact finite-call consumption,
 denial non-consumption, replay behavior, audit replay, and conservation of
 finite delegated calls.
+
+The runtime regression cases also verify that an exact grant is consumed
+before an overlapping tree grant, preserving broader authority for requests
+that genuinely need it.
 
 ## Coverage
 
@@ -35,8 +39,8 @@ moon coverage analyze -- -f summary
 
 | Scope | Covered points | Rate |
 | --- | ---: | ---: |
-| Core library | 486 / 514 | 94.6% |
-| All instrumented source | 547 / 784 | 69.8% |
+| Core library | 497 / 523 | 95.0% |
+| All instrumented source | 558 / 793 | 70.4% |
 
 The all-source denominator includes `cmd/main` and `examples/basic`. Their main
 functions are executed by the strict gate and CI, but executable runs do not
@@ -59,9 +63,9 @@ moon bench --release --deny-warn
 
 | Release-mode workload | Baseline mean |
 | --- | ---: |
-| Compile 100 entries into 25 normalized grants | 61.36 µs |
-| Create a runtime and authorize 500 calls | 444.43 µs |
-| Replay-audit 500 receipts | 275.94 µs |
+| Compile 100 entries into 25 normalized grants | 61.86 µs |
+| Create a runtime and authorize 500 calls | 451.48 µs |
+| Replay-audit 500 receipts | 281.43 µs |
 
 Each benchmark is deterministic in workload size and validates its retained
 result. These measurements are a local regression baseline, not a cross-host

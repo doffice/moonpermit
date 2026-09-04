@@ -92,10 +92,12 @@ Next gate: add property/state-machine testing, coverage, and benchmarks.
 - Added bounded algebra properties and runtime/delegation state machines.
 - Migrated the formal contract from legacy `#declaration_only` blocks to the
   current bodyless `declare` syntax after coverage exposed the incompatibility.
-- Raised the suite to 54 passing tests under `--deny-warn`.
-- Measured 486/514 core coverage points (94.6%) and transparently recorded the
-  lower 547/784 all-source result (69.8%) caused by executable adapters.
+- Raised the suite to 55 passing tests under `--deny-warn`.
+- Measured 497/523 core coverage points (95.0%) and transparently recorded the
+  lower 558/793 all-source result (70.4%) caused by executable adapters.
 - Added deterministic release benchmarks for compile, check, and audit paths.
 - Added an Ubuntu CI quality job for coverage and release benchmarks.
+- Added a focused overlapping-grant regression and changed runtime selection to
+  preserve broader authority by consuming the tightest usable grant first.
 
 Next gate: final repository audit, clean-clone verification, and remote CI.
