@@ -7,8 +7,8 @@ Plan[EffectRequest]
   -> normalize and merge
   -> Permit[Grant]
   -> RuntimeState(remaining budget, expiry, receipt sequence)
-  -> check(ConcreteEffect)
-  -> Decision + Receipt
+  -> check / check_with_proof(ConcreteEffect)
+  -> Decision + Receipt + StructuredProof
 ```
 
 ## Effect lattice
@@ -82,6 +82,19 @@ The runtime records allow and deny receipts with a monotonic local sequence,
 machine-readable reason, canonical effect, selected grant, and remaining
 budget. Reusing an invocation identifier is denied, making accidental retries
 visible and preventing double execution through this runtime instance.
+
+`check_with_proof` uses the same state transition as the compatible `check`
+method. It returns the emitted receipt together with an `AuthorizationProof`.
+The proof lists invocation uniqueness and each considered grant's scope,
+expiry, call-budget, and byte-budget outcome. Checks that cannot meaningfully
+run after a scope mismatch are explicitly `Skipped`. The decision grant
+identifier is copied from the receipt, while allowed budget is consumed once
+only after all checks pass.
+
+This proof is structured decision evidence, not a cryptographic object. It is
+bound to one runtime sequence and current counter state, and cannot be replayed
+as authorization. Generic explanations do not expose secret values beyond a
+typed secret identifier already present in the request.
 
 Logical time is supplied explicitly so tests and replays are deterministic.
 The embedding host is responsible for a trustworthy clock and durable receipt

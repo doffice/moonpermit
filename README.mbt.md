@@ -5,7 +5,8 @@
 
 MoonPermit is a pure MoonBit library and CLI for compiling an AI agent's
 structured plan into a least-authority permit, checking every proposed tool
-effect against that permit, and emitting an explainable execution receipt.
+effect against that permit, and emitting an explainable receipt with structured
+decision evidence.
 
 The core invariant is:
 
@@ -27,14 +28,15 @@ history is intentionally kept visible.
 
 Current milestone: the core vertical slice is runnable. Scope containment,
 budgeted runtime checks, non-amplifying delegation, approval diffs, JSON
-receipts, and deterministic offline replay are implemented and tested.
+receipts, structured authorization proofs, and deterministic offline replay are
+implemented and tested.
 
 ## Planned workflow
 
 ```text
 structured plan -> compile minimum permit -> approve once
                 -> check each tool call -> allow / deny / request expansion
-                -> emit deterministic receipts -> audit realized effects
+                -> emit receipt + proof -> audit realized effects
 ```
 
 ## Repository map
@@ -59,9 +61,9 @@ Install the current stable MoonBit toolchain, clone this repository, and run:
 moon run cmd/main
 ```
 
-The default demo shows an allow, budget exhaustion, expiry, rejected delegation,
-an authority expansion diff, and a successful offline receipt replay. No API
-key, network service, or paid dependency is needed.
+The default demo shows a structured proof, allow, budget exhaustion, expiry,
+rejected delegation, an authority expansion diff, and a successful offline
+receipt replay. No API key, network service, or paid dependency is needed.
 
 Compile a permit from the compact CLI effect grammar:
 
@@ -75,6 +77,13 @@ Check twice against a one-call grant; stdout is JSONL, one receipt per check:
 ```bash
 moon run cmd/main -- check --calls 1 --repeat 2 \
   read-tree:docs read:docs/guide.md
+```
+
+Explain one atomic decision as machine-readable receipt-plus-proof JSON:
+
+```bash
+moon run cmd/main -- explain --calls 2 --bytes 10 --expires 20 \
+  --cost 4 --now 5 read-tree:docs read:docs/guide.md
 ```
 
 Other commands are `delegate`, `diff`, and `audit`. See
@@ -98,12 +107,21 @@ test {
     0L,
   )
   assert_true(receipt.allowed())
+
+  let explained = @moonpermit.runtime(permit).check_with_proof(
+    "read-with-proof",
+    @moonpermit.FileRead(@moonpermit.path_exact("docs/guide.md")),
+    0L,
+  )
+  assert_true(explained.receipt.allowed())
+  assert_eq(explained.proof.reason, @moonpermit.ReasonCode::Granted)
 }
 ```
 
 All runtime time values are explicit logical `Int64` timestamps. Expiry is
 exclusive. A finite budget is decremented only after scope, expiry, call, and
-byte checks all pass.
+byte checks all pass. `check_with_proof` returns its receipt and proof from that
+same state transition, so evidence generation never consumes budget twice.
 
 ## Development
 
@@ -116,7 +134,7 @@ moon fmt --check
 moon info
 ```
 
-See [`docs/quality.md`](docs/quality.md) for the current 55-test result,
+See [`docs/quality.md`](docs/quality.md) for the current 62-test result,
 coverage denominators, reproducible benchmark workloads, and limitations.
 
 The complete local gate also passes from an isolated clean clone. Until a
@@ -127,7 +145,9 @@ treated as a transparent pre-release.
 
 MoonPermit is an application-level reference monitor. The embedding host must
 mediate every protected operation and provide truthful typed effects and time.
-Receipts are deterministic replay evidence, not cryptographic signatures. See
+Proofs and receipts are deterministic decision evidence, not cryptographic
+signatures or reusable authorization credentials. Proof explanations never
+copy secret values beyond the typed request identifier already being checked. See
 [`docs/threat-model.md`](docs/threat-model.md) and report vulnerabilities as
 described in [`SECURITY.md`](SECURITY.md).
 

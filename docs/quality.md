@@ -1,6 +1,6 @@
 # Quality evidence
 
-Baseline recorded on 2026-09-04 using MoonBit `moon 0.1.20260827`, `moonc
+Baseline updated on 2026-09-07 using MoonBit `moon 0.1.20260827`, `moonc
 v0.10.11+6ff76a5f9`, Linux x86_64. Exact timings vary by host; the commands and
 workloads, rather than these numbers, are the regression contract.
 
@@ -16,16 +16,17 @@ moon run cmd/main
 moon run examples/basic
 ```
 
-Current result: 55 tests pass. Tests are black-box unless an executable-only
+Current result: 62 tests pass. Tests are black-box unless an executable-only
 parser requires a white-box package test. The suite includes easy,
 intermediate, difficult-boundary, bounded-property, and state-machine cases.
 
-Remote CI run [#1](https://github.com/doffice/moonpermit/actions/runs/33846891880)
+Remote CI run [#2](https://github.com/doffice/moonpermit/actions/runs/33848232557)
 passed on Ubuntu, macOS, and Windows, with a separate Ubuntu quality job for
-coverage and release benchmarks. The run tested commit `181290e` on 2026-09-04.
+coverage and release benchmarks. The run tested `main` commit `fe6efad` on
+2026-09-04. The feature branch must pass the same jobs before merge.
 
-The reviewed MoonBit source snapshot contains 1,725 implementation/example
-lines, 1,394 test/benchmark lines, and 492 declarative contract lines (3,611
+The reviewed MoonBit source snapshot contains 1,939 implementation/example
+lines, 1,611 test/benchmark lines, and 556 declarative contract lines (4,106
 total). Generated interfaces and build output are excluded. These categories
 are reported separately so test or declaration volume cannot masquerade as
 implementation scale; no filler was added to reach a line-count target.
@@ -39,6 +40,10 @@ The runtime regression cases also verify that an exact grant is consumed
 before an overlapping tree grant, preserving broader authority for requests
 that genuinely need it.
 
+Authorization-proof tests cover allow, scope mismatch, expiry, exhausted call
+and byte budgets, duplicate invocation, overlapping grants, legacy API
+compatibility, single consumption, and deterministic JSON serialization.
+
 ## Coverage
 
 Reproduce with:
@@ -49,8 +54,8 @@ moon coverage analyze -- -f summary
 
 | Scope | Covered points | Rate |
 | --- | ---: | ---: |
-| Core library | 497 / 523 | 95.0% |
-| All instrumented source | 558 / 793 | 70.4% |
+| Core library | 528 / 550 | 96.0% |
+| All instrumented source | 589 / 838 | 70.3% |
 
 The all-source denominator includes `cmd/main` and `examples/basic`. Their main
 functions are executed by the strict gate and CI, but executable runs do not
@@ -73,9 +78,9 @@ moon bench --release --deny-warn
 
 | Release-mode workload | Baseline mean |
 | --- | ---: |
-| Compile 100 entries into 25 normalized grants | 61.86 µs |
-| Create a runtime and authorize 500 calls | 451.48 µs |
-| Replay-audit 500 receipts | 281.43 µs |
+| Compile 100 entries into 25 normalized grants | 62.45 µs |
+| Create a runtime and authorize 500 calls | 538.45 µs |
+| Replay-audit 500 receipts | 354.52 µs |
 
 Each benchmark is deterministic in workload size and validates its retained
 result. These measurements are a local regression baseline, not a cross-host
