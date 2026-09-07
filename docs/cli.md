@@ -33,6 +33,10 @@ moon run cmd/main -- compile demo --calls 2 read-tree:docs
 moon run cmd/main -- check --calls 1 --repeat 2 \
   read-tree:docs read:docs/guide.md
 
+# Explain one atomic decision as deterministic receipt-plus-proof JSON.
+moon run cmd/main -- explain --calls 2 --bytes 10 --expires 20 \
+  --cost 4 --now 5 read-tree:docs read:docs/guide.md
+
 # Issue a child permit only if it attenuates the live parent authority.
 moon run cmd/main -- delegate --parent-calls 2 --child-calls 1 \
   read-tree:docs read:docs/guide.md
@@ -44,10 +48,14 @@ moon run cmd/main -- diff read-tree:docs read:.env
 moon run cmd/main -- audit
 ```
 
-`compile`, `delegate`, and `audit` emit JSON. `check` emits one compact JSON
-object per line. `diff` emits a stable review-oriented text form. The library
-function `audit_receipts` accepts a permit and receipt array, enabling hosts to
-replay persisted logs without contacting an external service.
+`compile`, `explain`, `delegate`, and `audit` emit JSON. `check` emits one
+compact JSON object per line. `explain` emits a `receipt` and `proof` from one
+runtime transition. The proof records invocation uniqueness plus per-grant
+scope, expiry, call-budget, and byte-budget checks as `Pass`, `Fail`, or
+`Skipped`; `decision_grant_id` identifies the selected or rejected matching
+grant. `diff` emits a stable review-oriented text form. The library function
+`audit_receipts` accepts a permit and receipt array, enabling hosts to replay
+persisted logs without contacting an external service.
 
 ## Current boundary
 

@@ -22,3 +22,7 @@ All notable changes will be documented here.
   reproducible release benchmarks, and current `declare` contract syntax.
 - Runtime authorization now consumes the tightest usable overlapping grant so
   broader authority remains available for effects that require it.
+- Added structured per-check authorization proofs and an atomic
+  `Runtime::check_with_proof` API without changing legacy receipt behavior.
+- Added a deterministic `explain` CLI command plus black-box coverage for allow,
+  scope mismatch, expiry, exhausted budgets, duplicate calls, and grant overlap.

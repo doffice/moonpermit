@@ -4,12 +4,10 @@ This checklist combines the current September event page with conservative
 engineering gates from the user-provided `osc2026-guide`. September official
 notices override any older August-specific detail.
 
-## Registration and process
+## Public project process
 
 - [x] Public GitHub repository exists.
 - [x] Approximately one-page Markdown proposal exists.
-- [ ] Owner submits the official September registration form.
-- [ ] Owner joins the event group; this affects reward payment.
 - [ ] Proposal receives rolling eligibility approval.
 - [ ] Meaningful commits, Issues, pull requests, and update logs remain public.
 
@@ -26,8 +24,10 @@ notices override any older August-specific detail.
 - [x] README documents installation, API, CLI, examples, limits, and release status.
 - [x] At least one end-to-end example runs without paid services or secrets.
 - [x] Core promises in `proposal.md` are implemented and tested.
+- [x] `check_with_proof` emits receipt and structured proof atomically.
+- [x] Proof tests cover allow, scope, expiry, call, byte, replay, and overlap.
+- [x] `explain` emits deterministic machine-readable JSON.
 - [x] Git tracks no build cache, secret, temporary, or unknown-origin artifact.
-- [ ] Package is published to mooncakes.io and installation is verified.
 
 ## Quality and award signals
 
@@ -38,6 +38,10 @@ notices override any older August-specific detail.
 - [x] Architecture, threat model, source provenance, and AI use are documented.
 - [x] Effective MoonBit implementation scale is substantial; no filler code.
 - [x] Demo clearly shows allow, deny, exhaustion, expiry, and delegation failure.
+
+## Optional distribution
+
+- [ ] If useful for discoverability, publish to mooncakes.io and verify install.
 
 ## Final manual checks
 

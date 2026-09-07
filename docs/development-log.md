@@ -113,8 +113,8 @@ Next gate: final repository audit, clean-clone verification, and remote CI.
 - Recorded a transparent 3,611-line MoonBit source breakdown: 1,725
   implementation/example, 1,394 test/benchmark, and 492 contract lines.
 
-Next gate: publish `main`, observe remote CI, then complete owner-only event
-registration, group membership, and rolling eligibility review.
+Next gate: publish `main`, observe remote CI, and await rolling eligibility
+review.
 
 ## 2026-09-04 — Public CI milestone
 
@@ -125,5 +125,20 @@ registration, group membership, and rolling eligibility review.
 - GitHub Actions run #1 passed all four jobs: Ubuntu, macOS, Windows, and the
   coverage/benchmark quality job.
 
-Next gate: create public planning/review artifacts, publish the Mooncakes
-package, and complete owner-only registration and eligibility steps.
+Next gate: create public planning/review artifacts, evaluate optional Mooncakes
+distribution, and complete repository-side eligibility evidence.
+
+## 2026-09-07 — Structured authorization proof milestone
+
+- Added public proof check kinds, pass/fail/skipped states, proof entries,
+  authorization proofs, and atomic checked-result types.
+- Refactored legacy `Runtime::check` onto `check_with_proof` while preserving its
+  public signature, receipt shape, grant choice, and single budget consumption.
+- Added deterministic `explain` JSON output and included proof evidence in the
+  built-in demo.
+- Added seven black-box tests for allow, scope mismatch, expiry, call and byte
+  exhaustion, duplicate invocation, overlapping grants, atomicity, and stable
+  serialization; verified 62 tests under `--deny-warn`.
+
+Next gate: regenerate the public interface, measure coverage, pass the complete
+strict gate, and publish the feature branch for review through Issue #1.

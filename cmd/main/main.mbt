@@ -206,6 +206,23 @@ fn run_check(matches : @argparse.Matches) -> Unit raise {
 }
 
 ///|
+fn run_explain(matches : @argparse.Matches) -> Unit raise {
+  let permit = @moonpermit.compile_plan("cli-explain", [
+    @moonpermit.effect_request(
+      parse_effect(value(matches, "approved-effect")),
+      parse_budget(matches),
+    ),
+  ])
+  let runtime = @moonpermit.runtime(permit)
+  let requested = parse_effect(value(matches, "requested-effect"))
+  let byte_cost = parse_optional_int64(matches, "cost").unwrap_or(0L)
+  let now = parse_optional_int64(matches, "now").unwrap_or(0L)
+  print_json(
+    runtime.check_with_proof("cli-explain", requested, now, byte_cost~),
+  )
+}
+
+///|
 fn run_delegate(matches : @argparse.Matches) -> Unit raise {
   let parent = @moonpermit.compile_plan("cli-parent", [
     @moonpermit.effect_request(
@@ -289,7 +306,7 @@ fn run_audit() -> Unit raise {
 ///|
 fn run_demo() -> Unit raise {
   println(
-    "MoonPermit demo: allow, deny, exhaustion, expiry, delegation, diff, audit",
+    "MoonPermit demo: proof, allow, deny, exhaustion, expiry, delegation, diff, audit",
   )
   let approved = @moonpermit.compile_plan("demo", [
     @moonpermit.effect_request(
@@ -299,13 +316,13 @@ fn run_demo() -> Unit raise {
   ])
   println(approved.canonical())
   let runtime = @moonpermit.runtime(approved)
-  print_json(
-    runtime.check(
-      "demo-1",
-      @moonpermit.FileRead(@moonpermit.path_exact("docs/guide.md")),
-      1L,
-    ),
+  let explained = runtime.check_with_proof(
+    "demo-1",
+    @moonpermit.FileRead(@moonpermit.path_exact("docs/guide.md")),
+    1L,
   )
+  print_json(explained.receipt)
+  print_json(explained.proof)
   print_json(
     runtime.check(
       "demo-2",
@@ -403,6 +420,27 @@ fn cli() -> @argparse.Command {
       ),
     ],
   )
+  let explain = @argparse.Command(
+    "explain",
+    about="Check once and emit a receipt with structured proof as JSON",
+    options=budget_options() +
+      [
+        @argparse.OptionArg("cost", about="Byte cost", default_values=["0"]),
+        @argparse.OptionArg("now", about="Explicit logical timestamp", default_values=[
+          "0",
+        ]),
+      ],
+    positionals=[
+      @argparse.PositionArg(
+        "approved-effect",
+        num_args=@argparse.ValueRange(lower=1, upper=1),
+      ),
+      @argparse.PositionArg(
+        "requested-effect",
+        num_args=@argparse.ValueRange(lower=1, upper=1),
+      ),
+    ],
+  )
   let delegate = @argparse.Command(
     "delegate",
     about="Issue a narrower child permit and reserve its budget",
@@ -443,6 +481,7 @@ fn cli() -> @argparse.Command {
     subcommands=[
       compile,
       check,
+      explain,
       delegate,
       diff,
       @argparse.Command("audit", about="Replay a receipt stream offline"),
@@ -460,6 +499,7 @@ fn main raise {
   match name {
     "compile" => run_compile(child)
     "check" => run_check(child)
+    "explain" => run_explain(child)
     "delegate" => run_delegate(child)
     "diff" => run_diff(child)
     "audit" => run_audit()
