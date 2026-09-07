@@ -173,6 +173,57 @@ pub(all) struct Receipt {
 } derive(Eq, Debug, ToJson)
 
 ///|
+/// Stable category for one check recorded in an authorization proof.
+pub(all) enum ProofCheckKind {
+  InvocationUnique
+  ScopeContained
+  NotExpired
+  CallBudgetAvailable
+  ByteBudgetAvailable
+} derive(Eq, Debug, ToJson)
+
+///|
+/// Outcome of one check. Skipped checks are explicit rather than inferred.
+pub(all) enum ProofCheckStatus {
+  Pass
+  Fail
+  Skipped
+} derive(Eq, Debug, ToJson)
+
+///|
+/// One deterministic, machine-readable authorization check.
+///
+/// Explanations never include secret values or untyped request payloads.
+pub(all) struct ProofCheck {
+  kind : ProofCheckKind
+  status : ProofCheckStatus
+  grant_id : String?
+  explanation : String
+} derive(Eq, Debug, ToJson)
+
+///|
+/// Structured evidence for the exact runtime state transition that emitted a
+/// receipt. This is decision evidence, not a cryptographic proof.
+pub(all) struct AuthorizationProof {
+  sequence : Int
+  invocation_id : String
+  permit_id : String
+  requested : EffectScope
+  effect : String
+  verdict : Verdict
+  decision_grant_id : String?
+  reason : ReasonCode
+  checks : Array[ProofCheck]
+} derive(Eq, Debug, ToJson)
+
+///|
+/// Receipt and proof returned by one atomic authorization decision.
+pub(all) struct CheckedAuthorization {
+  receipt : Receipt
+  proof : AuthorizationProof
+} derive(Eq, Debug, ToJson)
+
+///|
 /// Stable category for one offline verification failure.
 pub(all) enum AuditIssueCode {
   SequenceMismatch
@@ -436,6 +487,19 @@ declare pub fn Runtime::check(
   now : Int64,
   byte_cost? : Int64 = 0L,
 ) -> Receipt raise PermitError
+
+///|
+/// Check once and return the resulting receipt together with structured proof.
+///
+/// A successful decision consumes budget exactly once. Calling this method does
+/// not invoke `check` internally or emit a second receipt.
+declare pub fn Runtime::check_with_proof(
+  self : Runtime,
+  invocation_id : String,
+  requested : EffectScope,
+  now : Int64,
+  byte_cost? : Int64 = 0L,
+) -> CheckedAuthorization raise PermitError
 
 ///|
 /// Return the permit identifier attached to this runtime.

@@ -102,6 +102,18 @@ pub fn AuditReport::checked(Self) -> Int
 pub fn AuditReport::findings(Self) -> Array[AuditFinding]
 pub fn AuditReport::passed(Self) -> Bool
 
+pub(all) struct AuthorizationProof {
+  sequence : Int
+  invocation_id : String
+  permit_id : String
+  requested : EffectScope
+  effect : String
+  verdict : Verdict
+  decision_grant_id : String?
+  reason : ReasonCode
+  checks : Array[ProofCheck]
+} derive(Eq, ToJson, @debug.Debug)
+
 pub struct Budget {
   max_calls : Int?
   max_bytes : Int64?
@@ -110,6 +122,11 @@ pub struct Budget {
 pub fn Budget::expires_at(Self) -> Int64?
 pub fn Budget::max_bytes(Self) -> Int64?
 pub fn Budget::max_calls(Self) -> Int?
+
+pub(all) struct CheckedAuthorization {
+  receipt : Receipt
+  proof : AuthorizationProof
+} derive(Eq, ToJson, @debug.Debug)
 
 pub struct CommandScope {
   program : String
@@ -206,6 +223,27 @@ pub fn PermitDiff::entries(Self) -> Array[DiffEntry]
 pub fn PermitDiff::render(Self) -> String
 pub fn PermitDiff::requires_approval(Self) -> Bool
 
+pub(all) struct ProofCheck {
+  kind : ProofCheckKind
+  status : ProofCheckStatus
+  grant_id : String?
+  explanation : String
+} derive(Eq, ToJson, @debug.Debug)
+
+pub(all) enum ProofCheckKind {
+  InvocationUnique
+  ScopeContained
+  NotExpired
+  CallBudgetAvailable
+  ByteBudgetAvailable
+} derive(Eq, ToJson, @debug.Debug)
+
+pub(all) enum ProofCheckStatus {
+  Pass
+  Fail
+  Skipped
+} derive(Eq, ToJson, @debug.Debug)
+
 pub(all) enum ReasonCode {
   Granted
   NoMatchingGrant
@@ -240,6 +278,7 @@ pub struct Runtime {
   mut sequence : Int
 }
 pub fn Runtime::check(Self, String, EffectScope, Int64, byte_cost? : Int64) -> Receipt raise PermitError
+pub fn Runtime::check_with_proof(Self, String, EffectScope, Int64, byte_cost? : Int64) -> CheckedAuthorization raise PermitError
 pub fn Runtime::delegate(Self, String, Array[EffectRequest], Int64) -> Permit raise PermitError
 pub fn Runtime::permit_id(Self) -> String
 pub fn Runtime::receipt_count(Self) -> Int
