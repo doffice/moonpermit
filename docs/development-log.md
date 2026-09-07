@@ -142,3 +142,17 @@ distribution, and complete repository-side eligibility evidence.
 
 Next gate: regenerate the public interface, measure coverage, pass the complete
 strict gate, and publish the feature branch for review through Issue #1.
+
+## 2026-09-07 — v0.1.0 release milestone
+
+- Merged PR #2 and closed Issue #1 with all Ubuntu, macOS, Windows, coverage,
+  benchmark, API-drift, CLI, and embedding checks passing.
+- Published the annotated `v0.1.0` Git tag and GitHub Release from merge commit
+  `619328f`.
+- Published `doffice/moonpermit@0.1.0` to Mooncakes; the registry build and
+  generated API documentation succeeded.
+- Verified the registry checksum against the locally audited package and added
+  the dependency to a fresh module that passed `moon check --deny-warn`.
+
+Next gate: package the stable release links, demo flow, and verification evidence
+for submission review.

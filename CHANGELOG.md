@@ -4,6 +4,10 @@ All notable changes will be documented here.
 
 ## Unreleased
 
+No unreleased changes.
+
+## 0.1.0 - 2026-09-07
+
 - Initialized the MoonPermit proposal, governance, threat model, and acceptance gates.
 - Added normalized path, command, host, network, and effect scopes.
 - Added structural authority-containment checks with fail-closed mismatch reasons.

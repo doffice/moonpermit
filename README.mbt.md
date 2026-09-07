@@ -26,7 +26,9 @@ MoonPermit is under active development for the 2026 MoonBit September
 Hackathon. The repository starts from an empty public project, and development
 history is intentionally kept visible.
 
-Current milestone: the core vertical slice is runnable. Scope containment,
+The [`v0.1.0`](https://github.com/doffice/moonpermit/releases/tag/v0.1.0)
+reference release is available from GitHub and
+[Mooncakes](https://mooncakes.io/docs/doffice/moonpermit). Scope containment,
 budgeted runtime checks, non-amplifying delegation, approval diffs, JSON
 receipts, structured authorization proofs, and deterministic offline replay are
 implemented and tested.
@@ -54,6 +56,12 @@ structured plan -> compile minimum permit -> approve once
 - `cmd/main`: runnable CLI package.
 
 ## Quick start
+
+Add the published library to a MoonBit module:
+
+```bash
+moon add doffice/moonpermit@0.1.0
+```
 
 Install the current stable MoonBit toolchain, clone this repository, and run:
 
@@ -137,9 +145,8 @@ moon info
 See [`docs/quality.md`](docs/quality.md) for the current 62-test result,
 coverage denominators, reproducible benchmark workloads, and limitations.
 
-The complete local gate also passes from an isolated clean clone. Until a
-tagged release and remote CI are complete, the repository should still be
-treated as a transparent pre-release.
+The complete local gate also passes from an isolated clean clone. Release
+`v0.1.0` passed the same remote CI matrix and a clean Mooncakes consumer install.
 
 ## Security boundary
 

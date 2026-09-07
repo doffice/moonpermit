@@ -9,7 +9,7 @@ notices override any older August-specific detail.
 - [x] Public GitHub repository exists.
 - [x] Approximately one-page Markdown proposal exists.
 - [ ] Proposal receives rolling eligibility approval.
-- [ ] Meaningful commits, Issues, pull requests, and update logs remain public.
+- [x] Meaningful commits, Issues, pull requests, and update logs remain public.
 
 ## Hard repository gates
 
@@ -41,7 +41,8 @@ notices override any older August-specific detail.
 
 ## Optional distribution
 
-- [ ] If useful for discoverability, publish to mooncakes.io and verify install.
+- [x] Published `doffice/moonpermit@0.1.0` to Mooncakes and verified a clean install.
+- [x] Published GitHub Release `v0.1.0` from the accepted `main` commit.
 
 ## Final manual checks
 
