@@ -21,15 +21,20 @@ Current result: 65 tests pass. Tests are black-box unless an executable-only
 parser requires a white-box package test. The suite includes easy,
 intermediate, difficult-boundary, bounded-property, and state-machine cases.
 
-Remote CI run [#8](https://github.com/doffice/moonpermit/actions/runs/34578849597)
+Remote CI run [34579333431](https://github.com/doffice/moonpermit/actions/runs/34579333431)
 passed on Ubuntu, macOS, and Windows, with a separate Ubuntu quality job for
-coverage and release benchmarks. The run tested guarded-host merge commit
-`1aa1bbd` on 2026-09-11.
+coverage and release benchmarks. The run tested release commit `5545c44` on
+2026-09-11.
 
 The `doffice/moonpermit@0.1.0` Mooncakes artifact has SHA-256
 `78b46c2a9b0e03f42d97d79351624632011226fa6583fbba1c92c0f99171d2fd`.
 Mooncakes reported a successful registry build, and a fresh temporary module
 resolved the published dependency and passed `moon check --deny-warn`.
+
+The `doffice/moonpermit@0.1.1` Mooncakes artifact has SHA-256
+`08875e7b5b59f035475d7673adc2b8a05df8efa068026076574e3ce63f05087e`.
+The registry returned `200 OK`; its public version page returned HTTP 200, and
+a fresh temporary module downloaded `0.1.1` and passed `moon check --deny-warn`.
 
 The reviewed MoonBit source snapshot contains 1,939 implementation/example
 lines, 1,611 test/benchmark lines, and 556 declarative contract lines (4,106

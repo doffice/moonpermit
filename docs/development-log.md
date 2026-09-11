@@ -185,3 +185,16 @@ review through a pull request linked to Issue #4.
 Next gate: review and merge the release-preparation PR, then create the
 `v0.1.1` tag from accepted `main` and publish matching GitHub and Mooncakes
 artifacts.
+
+## 2026-09-11 — v0.1.1 publication milestone
+
+- Published the annotated `v0.1.1` tag from accepted main commit `5545c44`.
+- Published the public GitHub Release with guarded-host highlights, verification
+  results, coverage, and explicit security non-claims.
+- Published `doffice/moonpermit@0.1.1` to Mooncakes after a successful dry run;
+  the server returned `200 OK` for the real publication.
+- Verified the public version page and installed `0.1.1` into a fresh temporary
+  MoonBit module that passed `moon check --deny-warn`.
+
+Next gate: maintain the final submission package, demonstration recording, and
+technical explanation against the accepted release artifacts.
