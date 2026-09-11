@@ -4,6 +4,10 @@ All notable changes will be documented here.
 
 ## Unreleased
 
+No unreleased changes.
+
+## 0.1.1 - 2026-09-11
+
 - Added a deterministic, dependency-free guarded Agent Host example with a
   single authorization boundary and in-memory fake executor.
 - Added integration tests proving one executor call after `Allow` and zero

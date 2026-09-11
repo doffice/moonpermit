@@ -1,6 +1,6 @@
 # Quality evidence
 
-Baseline updated on 2026-09-07 using MoonBit `moon 0.1.20260827`, `moonc
+Baseline updated on 2026-09-11 using MoonBit `moon 0.1.20260827`, `moonc
 v0.10.11+6ff76a5f9`, Linux x86_64. Exact timings vary by host; the commands and
 workloads, rather than these numbers, are the regression contract.
 
@@ -21,10 +21,10 @@ Current result: 65 tests pass. Tests are black-box unless an executable-only
 parser requires a white-box package test. The suite includes easy,
 intermediate, difficult-boundary, bounded-property, and state-machine cases.
 
-Remote CI run [#4](https://github.com/doffice/moonpermit/actions/runs/34072924010)
+Remote CI run [#8](https://github.com/doffice/moonpermit/actions/runs/34578849597)
 passed on Ubuntu, macOS, and Windows, with a separate Ubuntu quality job for
-coverage and release benchmarks. The run tested release commit `619328f` on
-2026-09-07.
+coverage and release benchmarks. The run tested guarded-host merge commit
+`1aa1bbd` on 2026-09-11.
 
 The `doffice/moonpermit@0.1.0` Mooncakes artifact has SHA-256
 `78b46c2a9b0e03f42d97d79351624632011226fa6583fbba1c92c0f99171d2fd`.

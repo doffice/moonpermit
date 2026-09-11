@@ -171,3 +171,17 @@ for submission review.
 
 Next gate: pass the complete strict gate and publish the implementation for
 review through a pull request linked to Issue #4.
+
+## 2026-09-11 — v0.1.1 release preparation
+
+- Merged PR #5 as `1aa1bbd`; Issue #4 closed automatically.
+- Verified the post-merge CI matrix on Ubuntu, macOS, and Windows plus the
+  coverage and benchmark quality job.
+- Opened Issue #6 to track a reproducible patch release without changing the
+  runtime behavior or public API.
+- Bumped the module version to `0.1.1`, dated the guarded-host changelog entry,
+  and refreshed acceptance and quality evidence.
+
+Next gate: review and merge the release-preparation PR, then create the
+`v0.1.1` tag from accepted `main` and publish matching GitHub and Mooncakes
+artifacts.
