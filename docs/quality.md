@@ -14,9 +14,10 @@ moon info
 moon build
 moon run cmd/main
 moon run examples/basic
+moon run examples/guarded_host
 ```
 
-Current result: 62 tests pass. Tests are black-box unless an executable-only
+Current result: 65 tests pass. Tests are black-box unless an executable-only
 parser requires a white-box package test. The suite includes easy,
 intermediate, difficult-boundary, bounded-property, and state-machine cases.
 
@@ -49,6 +50,11 @@ Authorization-proof tests cover allow, scope mismatch, expiry, exhausted call
 and byte budgets, duplicate invocation, overlapping grants, legacy API
 compatibility, single consumption, and deterministic JSON serialization.
 
+Guarded-host integration tests additionally prove that `Allow` reaches its
+in-memory executor exactly once, while scope, expiry, budget, duplicate, and
+unsupported-tool denials reach it zero times. The example also verifies an
+authority expansion diff and deterministic offline receipt audit.
+
 ## Coverage
 
 Reproduce with:
@@ -60,9 +66,10 @@ moon coverage analyze -- -f summary
 | Scope | Covered points | Rate |
 | --- | ---: | ---: |
 | Core library | 528 / 550 | 96.0% |
-| All instrumented source | 589 / 838 | 70.3% |
+| All instrumented source | 639 / 890 | 71.8% |
 
-The all-source denominator includes `cmd/main` and `examples/basic`. Their main
+The all-source denominator includes `cmd/main`, `examples/basic`, and
+`examples/guarded_host`. Their main
 functions are executed by the strict gate and CI, but executable runs do not
 feed MoonBit's unit-test coverage trace. Both figures are reported to avoid
 hiding this distinction. Generated interfaces and staged declarations are not

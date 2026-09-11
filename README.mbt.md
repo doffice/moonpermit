@@ -53,6 +53,7 @@ structured plan -> compile minimum permit -> approve once
 - `docs/reviewer-guide.zh.md`: Chinese reviewer guide and three-minute demo.
 - `docs/cli.md`: command reference and effect-expression grammar.
 - `examples/basic`: dependency-free end-to-end embedding example.
+- `examples/guarded_host`: fail-closed Agent Host reference integration.
 - `cmd/main`: runnable CLI package.
 
 ## Quick start
@@ -72,6 +73,16 @@ moon run cmd/main
 The default demo shows a structured proof, allow, budget exhaustion, expiry,
 rejected delegation, an authority expansion diff, and a successful offline
 receipt replay. No API key, network service, or paid dependency is needed.
+
+Run the guarded Agent Host integration:
+
+```bash
+moon run examples/guarded_host
+```
+
+It uses a deterministic in-memory executor to prove that allowed calls execute
+once while denied, expired, exhausted, duplicate, and unsupported calls produce
+no executor side effect.
 
 Compile a permit from the compact CLI effect grammar:
 
@@ -140,9 +151,10 @@ moon check --deny-warn
 moon test --deny-warn
 moon fmt --check
 moon info
+moon run examples/guarded_host
 ```
 
-See [`docs/quality.md`](docs/quality.md) for the current 62-test result,
+See [`docs/quality.md`](docs/quality.md) for the current 65-test result,
 coverage denominators, reproducible benchmark workloads, and limitations.
 
 The complete local gate also passes from an isolated clean clone. Release

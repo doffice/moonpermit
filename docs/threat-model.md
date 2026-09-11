@@ -19,6 +19,8 @@ ensure:
 - Expired grants, exhausted counters, and duplicate invocation identifiers.
 - Child-agent privilege escalation and budget replenishment.
 - Receipt reordering, gaps, and content mismatch.
+- Host-adapter regressions that execute after scope, expiry, budget, duplicate,
+  or unsupported-call denial.
 
 ## Explicit non-claims
 
@@ -36,3 +38,9 @@ not digital signatures and must not be presented as tamper-proof evidence.
 Unsupported effects, invalid scopes, missing logical time, ambiguous adapter
 input, and internal accounting inconsistencies are denied with structured
 reasons. Diagnostics must not echo secret values.
+
+The guarded-host example uses an in-memory executor and performs no actual
+filesystem, process, network, or secret operation. Its tests establish the
+adapter control-flow invariant: one executor call after `Allow`, zero after
+`Deny` or an unsupported tool. They do not establish isolation from a malicious
+or bypassable host.

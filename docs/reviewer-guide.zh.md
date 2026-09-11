@@ -90,9 +90,14 @@ moon fmt --check
 moon info
 moon run cmd/main -- audit
 moon run examples/basic
+moon run examples/guarded_host
 ```
 
-当前基线为 62 项测试全部通过。相同门禁已在干净克隆和
+`guarded_host` 使用内存假执行器展示真实集成边界：所有已识别工具调用先经过
+`check_with_proof`，仅 `Allow` 执行一次；越权、过期、额度耗尽、重复标识和未知
+工具均不产生执行器副作用。它不读取真实文件，也不执行命令或网络请求。
+
+当前基线为 65 项测试全部通过。相同门禁已在干净克隆和
 GitHub Actions 的 Ubuntu、macOS、Windows 环境通过。
 
 ## 建议重点阅读
@@ -103,6 +108,7 @@ GitHub Actions 的 Ubuntu、macOS、Windows 环境通过。
 - `runtime.mbt`：最窄授权优先、原子预算消费、收据和结构化证明生成。
 - `delegation.mbt`：对子授权的事务性额度预留。
 - `audit.mbt`：从初始 Permit 重放完整执行证据。
+- `examples/guarded_host`：宿主完整中介、拒绝零副作用的参考集成。
 - `docs/quality.md`：测试、覆盖率、基准和源代码规模的可复现证据。
 - `docs/threat-model.md`：安全声明成立所需的宿主假设与明确非目标。
 

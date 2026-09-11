@@ -100,6 +100,12 @@ Logical time is supplied explicitly so tests and replays are deterministic.
 The embedding host is responsible for a trustworthy clock and durable receipt
 storage when those properties are required.
 
+`examples/guarded_host` is the reference adapter boundary. Its single guarded
+entry point normalizes a tool call, obtains an atomic receipt and proof, and
+invokes an in-memory executor only for `Allow`. Unsupported calls fail closed.
+The executor is intentionally fake: the example demonstrates complete host
+mediation, not operating-system enforcement or a general Agent framework.
+
 ## Offline audit
 
 Receipts retain the normalized typed request, logical time, byte cost, decision,
