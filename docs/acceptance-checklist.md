@@ -23,6 +23,7 @@ notices override any older August-specific detail.
 - [x] CI runs check, test, format, API drift, build, and runnable smoke test.
 - [x] README documents installation, API, CLI, examples, limits, and release status.
 - [x] At least one end-to-end example runs without paid services or secrets.
+- [x] Guarded-host example proves allow-once and deny-without-side-effect flow.
 - [x] Core promises in `proposal.md` are implemented and tested.
 - [x] `check_with_proof` emits receipt and structured proof atomically.
 - [x] Proof tests cover allow, scope, expiry, call, byte, replay, and overlap.
@@ -43,6 +44,7 @@ notices override any older August-specific detail.
 
 - [x] Published `doffice/moonpermit@0.1.0` to Mooncakes and verified a clean install.
 - [x] Published GitHub Release `v0.1.0` from the accepted `main` commit.
+- [ ] Publish and verify the prepared `v0.1.1` patch release.
 
 ## Final manual checks
 
