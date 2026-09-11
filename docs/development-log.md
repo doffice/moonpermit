@@ -156,3 +156,18 @@ strict gate, and publish the feature branch for review through Issue #1.
 
 Next gate: package the stable release links, demo flow, and verification evidence
 for submission review.
+
+## 2026-09-11 — Guarded Agent Host integration milestone
+
+- Opened Issue #4 with explicit outcomes, acceptance evidence, and non-claims.
+- Added a dependency-free reference host with one guarded invocation boundary
+  and a deterministic in-memory executor.
+- Demonstrated allow-once execution, scope denial, call exhaustion, duplicate
+  rejection, unsupported-tool fail-closed behavior, expansion review, and
+  offline receipt audit without real external effects.
+- Added three integration tests and a cross-platform CI smoke step; updated the
+  README, examples index, architecture, threat model, reviewer guide, quality
+  evidence, and changelog.
+
+Next gate: pass the complete strict gate and publish the implementation for
+review through a pull request linked to Issue #4.

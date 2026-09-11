@@ -1,0 +1,5 @@
+import {
+  "doffice/moonpermit",
+}
+
+pkgtype(kind: "executable")

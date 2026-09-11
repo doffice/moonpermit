@@ -38,6 +38,8 @@ jobs:
         run: moon run cmd/main
       - name: Embedding example
         run: moon run examples/basic
+      - name: Guarded host integration
+        run: moon run examples/guarded_host
 
   quality:
     runs-on: ubuntu-latest

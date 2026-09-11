@@ -4,7 +4,12 @@ All notable changes will be documented here.
 
 ## Unreleased
 
-No unreleased changes.
+- Added a deterministic, dependency-free guarded Agent Host example with a
+  single authorization boundary and in-memory fake executor.
+- Added integration tests proving one executor call after `Allow` and zero
+  calls after scope, expiry, budget, duplicate, or unsupported-tool denial.
+- Added the guarded-host smoke test to the cross-platform CI matrix and
+  documented its security boundary and review flow.
 
 ## 0.1.0 - 2026-09-07
 

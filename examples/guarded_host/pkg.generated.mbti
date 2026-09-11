@@ -1,0 +1,21 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "doffice/moonpermit/examples/guarded_host"
+
+import {
+  "moonbitlang/core/debug",
+}
+
+// Values
+
+// Errors
+
+// Types and methods
+type FakeExecutor
+
+type GuardedHost
+
+type ToolCall derive(Eq, @debug.Debug)
+
+// Type aliases
+
+// Traits
