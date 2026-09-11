@@ -44,7 +44,7 @@ notices override any older August-specific detail.
 
 - [x] Published `doffice/moonpermit@0.1.0` to Mooncakes and verified a clean install.
 - [x] Published GitHub Release `v0.1.0` from the accepted `main` commit.
-- [ ] Publish and verify the prepared `v0.1.1` patch release.
+- [x] Published and verified the `v0.1.1` GitHub and Mooncakes patch release.
 
 ## Final manual checks
 
