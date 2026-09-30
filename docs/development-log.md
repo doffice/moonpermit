@@ -1,5 +1,25 @@
 # Development log
 
+## 2026-09-30 — Acceptance repair and local validation
+
+- Based the repair on public main commit `721bdc0`; the earlier CI passes used
+  moonc 0.10.12 and do not meet the required minimum 0.10.14.
+- Added full ordered audit events for checks and successful child reservations,
+  preserving legacy receipt sequencing and documenting check-only replay.
+- Replaced space-joined command identifiers with JSON argument arrays and
+  added regressions for ambiguous arguments and reordered plans.
+- Added CLI behavior/error cases, all-subcommand CI smoke steps, event-based
+  examples and a matching v0.2.0 module/CLI version.
+- Corrected mandatory Mooncakes distribution and historical quality evidence.
+- Integration writes returned 403; with owner authorization, browser sign-in
+  and official downloads unblocked the repair branch and local toolchain.
+- Migrated public derived methods to explicit extensions required by 0.10.14.
+  Passed strict checking, formatting, generated-interface review and Wasm build.
+- Passed 87/87 native tests, all CLI workflows, both examples and 3/3 native
+  release benchmarks. Measured 821/939 all-source and 565/583 core coverage.
+- Local `moonrun` crashes with SIGSEGV; three-platform default-backend CI,
+  main merge and release remain pending and are not inferred from native tests.
+
 ## 2026-09-04 — Project initialization
 
 - Created the public `doffice/moonpermit` repository from an empty project.

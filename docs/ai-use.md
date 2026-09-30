@@ -33,3 +33,18 @@ private code, credentials, and unlicensed assets are prohibited.
   and API-review conventions.
 - Used `osc2026-guide` only as a conservative engineering checklist; its August
   dates, form links, and referral rules are not treated as September rules.
+
+## Acceptance repair — 2026-09-30
+
+- Reviewed the exact upstream main snapshot `721bdc0` and its CI evidence.
+- Drafted complete delegation/check audit events, parameter-safe canonical
+  identifiers, regression cases, CLI validation and documentation corrections.
+- Followed the MoonBit development guide and used public core interfaces for
+  API discovery because `moon ide` was unavailable without a compiler.
+- Installed official compiler/core `0.10.14+7d59c7ec9` through authorized browser
+  downloads. Used `moon ide` and actual compiler diagnostics to resolve the
+  0.10.14 compatibility warnings and new test errors.
+- Generated interfaces and formatting with MoonBit tools; passed strict check,
+  build, 87 native tests, CLI workflows, examples and native benchmarks.
+- Documented the local Wasm runner crash and measured native coverage. Remote
+  default-backend CI and v0.2.0 publication remain pending.
