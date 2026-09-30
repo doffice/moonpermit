@@ -1,6 +1,6 @@
 # Quality evidence
 
-## Current source: local verification complete; CI and publication pending
+## Current source: local and three-platform CI verified; publication pending
 
 The v0.2.0 source adds delegation-aware event replay, unambiguous command
 identifiers and CLI regression tests. On 2026-09-30 it passed strict checking,
@@ -17,9 +17,19 @@ with SIGSEGV, including on `moonrun --version`; it is therefore not claimed as
 a passing local execution. CI retains the default Wasm checks on all three
 operating systems, using pinned compiler/core `0.10.14+7d59c7ec9`.
 
-The integration's remote writes returned 403, so the owner authorized browser
-submission and signed in. The repair branch was created from the actual main
-history. Remote CI, merging and v0.2.0 publication remain separate gates.
+[PR #10](https://github.com/doffice/moonpermit/pull/10) retains actual upstream
+history and contains the repair through commit
+`471a68eacffef56e68667e4673f9c7f06d11834f`. CI run
+[36737771009](https://github.com/doffice/moonpermit/actions/runs/36737771009)
+passed all four jobs on 2026-09-30: Ubuntu, macOS, Windows and quality. Each
+verify job passed strict checking, 87 default-Wasm tests, formatting, generated
+API drift, build, every CLI workflow and both examples. The quality job passed
+87 coverage tests and three release benchmarks. Its version output records
+`moonc v0.10.14+7d59c7ec9` and `moonrun 0.1.20260920`.
+
+The CI result resolves default-backend execution for the submitted source;
+the local runner limitation above remains specific to this environment.
+Merging, main CI and v0.2.0 publication remain separate gates.
 
 Required closure evidence:
 
@@ -120,7 +130,8 @@ These regression cases are included in the passing 87-test native suite.
 
 ## Coverage
 
-Current local native measurement (2026-09-30):
+Current measurement (2026-09-30): local native and PR CI default Wasm report
+the same covered-point counts. Local commands:
 
 ```bash
 moon test --target native --enable-coverage --deny-warn
@@ -137,7 +148,9 @@ moon coverage report -f summary
 
 Core is total minus CLI and both examples. The basic executable was separately
 run successfully; executable smoke runs do not contribute unit-test traces.
-The remote quality job will independently measure the default Wasm backend.
+The PR quality job independently measured the default Wasm backend with
+`moon test --enable-coverage --deny-warn` and
+`moon coverage analyze -- -f summary`, and confirmed the same counts.
 
 Historical default-backend measurement is reproduced with:
 
@@ -182,6 +195,16 @@ Current local native release run (2026-09-30), reproduced with
 
 These are same-session measurements, not a performance comparison with the
 historical host or another backend.
+
+PR CI run 36737771009 also passed 3/3 default-Wasm release workloads:
+
+| Workload | CI Wasm mean |
+| --- | ---: |
+| Compile 100 entries | 60.02 µs |
+| Authorize 500 checks | 565.11 µs |
+| Audit 500 receipts | 371.44 µs |
+
+These are backend-specific regression measurements, not cross-host speed claims.
 
 The historical default-backend baseline below is reproduced with:
 

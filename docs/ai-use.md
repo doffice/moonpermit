@@ -46,5 +46,7 @@ private code, credentials, and unlicensed assets are prohibited.
   0.10.14 compatibility warnings and new test errors.
 - Generated interfaces and formatting with MoonBit tools; passed strict check,
   build, 87 native tests, CLI workflows, examples and native benchmarks.
-- Documented the local Wasm runner crash and measured native coverage. Remote
-  default-backend CI and v0.2.0 publication remain pending.
+- Documented the local Wasm runner crash and measured native coverage.
+- Submitted seven repair commits through the owner-authorized browser in
+  PR #10. CI run 36737771009 passed default-Wasm tests, examples and CLI on
+  Ubuntu/macOS/Windows, plus coverage and benchmarks. Publication remains pending.

@@ -17,8 +17,12 @@
   Passed strict checking, formatting, generated-interface review and Wasm build.
 - Passed 87/87 native tests, all CLI workflows, both examples and 3/3 native
   release benchmarks. Measured 821/939 all-source and 565/583 core coverage.
-- Local `moonrun` crashes with SIGSEGV; three-platform default-backend CI,
-  main merge and release remain pending and are not inferred from native tests.
+- Local `moonrun` crashes with SIGSEGV; default-backend execution was checked
+  independently on GitHub runners.
+- Submitted seven focused commits through `471a68e` in PR #10. CI run
+  36737771009 passed all four jobs, including 87 tests per platform,
+  both examples, every CLI workflow, 96.9% core coverage and three benchmarks.
+  Main merge/CI and release remain separate pending gates.
 
 ## 2026-09-04 — Project initialization
 
