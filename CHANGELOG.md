@@ -4,7 +4,23 @@ All notable changes will be documented here.
 
 ## Unreleased
 
-No unreleased changes.
+### 0.2.0 (verification and publication pending)
+
+- Record successful child-budget reservations alongside authorization checks
+  through `Runtime::events` and replay the complete stream with `audit_events`.
+- Preserve `Receipt` and check-only `audit_receipts`; document separate event
+  sequencing, rollback behavior and evidence migration.
+- Fix process canonical identifiers using JSON argument arrays. This changes
+  command strings and potentially grant order; replay old logs with v0.1.
+- Add regressions for delegation/check composition, altered evidence, snapshot
+  isolation, parameter boundaries, deterministic plans and all CLI subcommands.
+- Reject non-positive CLI repeat counts and align the CLI version with the module.
+- Pin CI's compiler and core to `0.10.14+7d59c7ec9` and run every CLI workflow
+  plus both examples on Ubuntu, macOS and Windows.
+- Explicitly extend public derived methods for MoonBit 0.10.14 compatibility;
+  regenerate the public interface with `moon info`.
+- Correct the acceptance checklist and distinguish historical quality results
+  from pending verification of this source.
 
 ## 0.1.1 - 2026-09-11
 

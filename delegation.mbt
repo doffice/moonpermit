@@ -98,5 +98,16 @@ pub fn Runtime::delegate(
     state.remaining_calls = calls[index]
     state.remaining_bytes = bytes[index]
   }
+  self.events.push({
+    sequence: self.events.length() + 1,
+    kind: AuditEventKind::Delegated({
+      parent_permit_id: self.permit_id,
+      child,
+      logical_time: now,
+      remaining_budgets: self.states.map(state => {
+        available_budget(state, state.remaining_calls, state.remaining_bytes)
+      }),
+    }),
+  })
   child
 }

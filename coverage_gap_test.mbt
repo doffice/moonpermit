@@ -75,7 +75,7 @@ test "command and network negative branches stay fail closed" {
   assert_false(@moonpermit.command_contains(exact, prefix))
   assert_eq(
     @moonpermit.ProcessExec(prefix).canonical(),
-    "process.exec:moon test ...",
+    "process.exec:[\"moon\",\"test\"] ...",
   )
   let broad_host = @moonpermit.host_and_subdomains("example.com")
   assert_true(broad_host.includes_subdomains())
