@@ -4,7 +4,10 @@ All notable changes will be documented here.
 
 ## Unreleased
 
-### 0.2.0 (CI verified; publication pending)
+## 0.2.0 - 2026-09-30
+
+GitHub source/package release verified; Mooncakes publication and a fresh
+registry consumer remain pending authenticated upload.
 
 - Record successful child-budget reservations alongside authorization checks
   through `Runtime::events` and replay the complete stream with `audit_events`.
@@ -21,6 +24,8 @@ All notable changes will be documented here.
   regenerate the public interface with `moon info`.
 - Correct the acceptance checklist and distinguish historical quality results
   from this source's passing three-platform CI, 87 tests and 96.9% core coverage.
+- Merge PR #10 with its nine focused commits; pass main CI 36739700598 and
+  publish GitHub v0.2.0 with a checksummed package from source commit `22878a7`.
 
 ## 0.1.1 - 2026-09-11
 

@@ -33,11 +33,13 @@ budgeted runtime checks, non-amplifying delegation, approval diffs, JSON
 receipts, structured authorization proofs, and deterministic offline replay are
 implemented and tested.
 
-This source branch prepares **v0.2.0**. It adds complete replay of child-budget
-reservations and fixes ambiguous command identifiers. All four jobs in
-[PR #10 CI](https://github.com/doffice/moonpermit/actions/runs/36737771009)
-passed with moonc 0.10.14, including 87 tests on each of Ubuntu, macOS and
-Windows. Publication is pending; v0.1.1 remains the published version. See
+The verified [**v0.2.0 GitHub source/package release**](https://github.com/doffice/moonpermit/releases/tag/v0.2.0)
+adds complete replay of child-budget reservations and fixes ambiguous command
+identifiers. [PR #10](https://github.com/doffice/moonpermit/pull/10) is merged;
+[main CI](https://github.com/doffice/moonpermit/actions/runs/36739700598)
+passed all four jobs with moonc 0.10.14, including 87 tests on each of Ubuntu,
+macOS and Windows. Mooncakes 0.2.0 publication awaits the owner's registry
+login; v0.1.1 remains the version available through `moon add`. See
 [`docs/quality.md`](docs/quality.md) for the evidence and remaining gates.
 
 ## Planned workflow
@@ -71,8 +73,9 @@ Add the published library to a MoonBit module:
 moon add doffice/moonpermit@0.1.1
 ```
 
-The new event-audit API below requires the v0.2.0 source checkout. Once that
-release is published, install it with `moon add doffice/moonpermit@0.2.0`.
+The new event-audit API below requires the v0.2.0 source checkout or the package
+attached to its GitHub release. After its separate Mooncakes publication is
+verified, install it with `moon add doffice/moonpermit@0.2.0`.
 
 Install [MoonBit](https://www.moonbitlang.com/download/) with **moonc 0.10.14 or
 newer**. CI pins the compiler and matching core to `0.10.14+7d59c7ec9`.
