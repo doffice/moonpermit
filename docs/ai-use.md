@@ -49,4 +49,8 @@ private code, credentials, and unlicensed assets are prohibited.
 - Documented the local Wasm runner crash and measured native coverage.
 - Submitted seven repair commits through the owner-authorized browser in
   PR #10. CI run 36737771009 passed default-Wasm tests, examples and CLI on
-  Ubuntu/macOS/Windows, plus coverage and benchmarks. Publication remains pending.
+  Ubuntu/macOS/Windows, plus coverage and benchmarks.
+- Merged PR #10 at `22878a7`; main CI 36739700598 passed all four jobs. Packaged
+  the matching clean source, verified 87 tests in a separately extracted copy,
+  and published GitHub v0.2.0 with the archive checksum. Mooncakes publication
+  remains blocked on the owner's registry login, not inferred from GitHub login.

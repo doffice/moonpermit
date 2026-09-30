@@ -12,16 +12,19 @@ strict checking, formatting, Wasm build, 87 native tests, all CLI workflows,
 both examples and native benchmarks on moonc 0.10.14. Its remote branch is
 based on actual main history. [PR #10 CI run 36737771009](https://github.com/doffice/moonpermit/actions/runs/36737771009)
 passed Ubuntu, macOS, Windows and quality, including 87 default-Wasm tests,
-all CLI workflows and both examples. Merge/main CI and publication remain
-pending; see `quality.md` for exact source and measured evidence.
+all CLI workflows and both examples. PR #10 is merged at `22878a7`; [main CI
+36739700598](https://github.com/doffice/moonpermit/actions/runs/36739700598)
+passed all four jobs. [GitHub v0.2.0](https://github.com/doffice/moonpermit/releases/tag/v0.2.0)
+includes the matching verified package. Mooncakes 0.2.0 and its fresh consumer
+remain pending the owner's registry authentication; see `quality.md`.
 
 | Requirement | Existing evidence | Closure for v0.2.0 |
 | --- | --- | --- |
 | 1. Mainly MoonBit; moonc >= 0.10.14 | Implementation and tests are MoonBit | CI records successful compiler/core 0.10.14+7d59c7ec9 |
-| 2. Public GitHub and clear commits | Public repository and main history | Seven focused repair commits and public PR #10 retain upstream history |
+| 2. Public GitHub and clear commits | Public repository and main history | Merged PR #10 preserves nine focused repair/evidence commits |
 | 3. Clear structure and working core | Scope/planner/runtime/delegation/audit/CLI packages | Composition, tampering and argument-boundary regressions pass natively and on CI |
 | 4. Reproducible README | Goal, installation, API, CLI, examples and limits | README and docstring tests plus three-OS workflow verification pass |
-| 5. CI checks, builds and tests | Three-OS verify and Linux quality jobs | Updated pinned CI is green; merged main remains a separate gate |
+| 5. CI checks, builds and tests | Three-OS verify and Linux quality jobs | Final PR and merged main are green on all four jobs |
 | 6. Runnable example | Basic and guarded-host examples | Both revised examples pass natively and on all three CI platforms |
 | 7. Complete core-path tests | Native and default-Wasm suites: 87/87 | CI confirms 565/583 core coverage (96.9%) and 821/939 total (87.4%) |
 | 8. Publish to mooncakes.io | `doffice/moonpermit@0.1.1` exists | Publish the verified v0.2.0 source and validate a clean consumer install |
@@ -41,10 +44,12 @@ pending; see `quality.md` for exact source and measured evidence.
 - [x] Measure native coverage and pass 3/3 native release benchmarks.
 - [x] Commit generated interfaces and repeat default-backend tests on CI.
 - [x] Publish a focused PR; pass Ubuntu/macOS/Windows CI and quality job.
-- [ ] Merge the green repair and verify CI on the resulting main commit.
-- [ ] Publish matching GitHub v0.2.0 and Mooncakes 0.2.0 artifacts.
+- [x] Merge the green repair and verify CI on the resulting main commit.
+- [x] Publish GitHub v0.2.0 and its checksummed package from verified commit `22878a7`.
+- [ ] Publish the matching Mooncakes 0.2.0 artifact with the owner's registry login.
 - [ ] Install 0.2.0 in a fresh consumer module and run its delegation/audit sample.
-- [ ] Replace pending statements with actual commit/run/release links and results.
+- [x] Record actual commit/run/GitHub release links and measured results.
+- [ ] Record the registry publication and consumer results after they actually pass.
 
 ## Event administration
 

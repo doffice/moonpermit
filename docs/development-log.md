@@ -22,7 +22,17 @@
 - Submitted seven focused commits through `471a68e` in PR #10. CI run
   36737771009 passed all four jobs, including 87 tests per platform,
   both examples, every CLI workflow, 96.9% core coverage and three benchmarks.
-  Main merge/CI and release remain separate pending gates.
+- Final PR commit `5292843` passed CI 36739298706. Merged all nine commits
+  without squashing at `22878a7`; main CI 36739700598 passed all four jobs.
+- Published GitHub v0.2.0 from `22878a7`, with the matching `moon package`
+  archive and SHA-256. A separately extracted copy passed 87/87 native tests.
+- A separate consumer imported the extracted archive via `moon.work` and
+  passed strict checking, Wasm build and the delegation/audit sample's native
+  run (`registry-consumer: ok`). This is package/API verification, not registry
+  install evidence.
+- Mooncakes still lists 0.1.1. The publish dry-run requires a missing registry
+  credentials file; publication and fresh registry-consumer verification remain
+  pending the owner's existing Mooncakes login. No credential was requested in chat.
 
 ## 2026-09-04 — Project initialization
 

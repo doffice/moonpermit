@@ -29,7 +29,9 @@ child permit    <= parent permit
 环境需要 moonc 0.10.14 或更新版本，CI 固定为 `0.10.14+7d59c7ec9`。
 示例不需要 API Key、网络服务或付费依赖。本分支准备发布 v0.2.0，已完成严格
 检查、构建和 87 项 native 测试；PR #10 的 CI 36737771009 已通过
-Ubuntu、macOS、Windows 默认后端验证和质量任务。主分支合并验证与发布仍待完成。
+Ubuntu、macOS、Windows 默认后端验证和质量任务。PR 已合并，main CI 36739700598
+也全部通过，GitHub v0.2.0 附有校验过的发布包。Mooncakes 0.2.0 发布与消费验证
+仍需仓库所有者的 Mooncakes 认证；当前可安装的注册表版本仍是 0.1.1。
 当前已发布版本为 v0.1.1。
 
 ### 1. 运行综合场景
