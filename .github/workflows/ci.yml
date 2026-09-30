@@ -19,7 +19,10 @@ jobs:
     steps:
       - uses: actions/checkout@v5
       - uses: hustcer/setup-moonbit@v1
-      - name: Toolchain
+        with:
+          version: '0.10.14+7d59c7ec9'
+          core-version: '0.10.14+7d59c7ec9'
+      - name: Pinned toolchain (minimum moonc 0.10.14)
         run: moon version --all
       - name: Check
         run: moon check --deny-warn
@@ -36,6 +39,18 @@ jobs:
         run: moon build
       - name: CLI smoke test
         run: moon run cmd/main
+      - name: CLI compile
+        run: moon run cmd/main -- compile ci --calls 2 read-tree:docs
+      - name: CLI check
+        run: moon run cmd/main -- check --calls 1 --repeat 2 read-tree:docs read:docs/guide.md
+      - name: CLI explain
+        run: moon run cmd/main -- explain --calls 2 --bytes 10 --cost 4 read-tree:docs read:docs/guide.md
+      - name: CLI delegate
+        run: moon run cmd/main -- delegate --parent-calls 2 --child-calls 1 read-tree:docs read:docs/guide.md
+      - name: CLI diff
+        run: moon run cmd/main -- diff read-tree:docs read:.env
+      - name: CLI audit
+        run: moon run cmd/main -- audit
       - name: Embedding example
         run: moon run examples/basic
       - name: Guarded host integration
@@ -46,6 +61,11 @@ jobs:
     steps:
       - uses: actions/checkout@v5
       - uses: hustcer/setup-moonbit@v1
+        with:
+          version: '0.10.14+7d59c7ec9'
+          core-version: '0.10.14+7d59c7ec9'
+      - name: Pinned toolchain (minimum moonc 0.10.14)
+        run: moon version --all
       - name: Coverage tests
         run: moon test --enable-coverage --deny-warn
       - name: Coverage summary

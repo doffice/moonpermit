@@ -173,6 +173,31 @@ pub(all) struct Receipt {
 } derive(Eq, Debug, ToJson)
 
 ///|
+/// A committed child permit and the parent budgets after its reservation.
+/// `remaining_budgets` follows the original permit's canonical grant order.
+pub(all) struct DelegationReceipt {
+  parent_permit_id : String
+  child : Permit
+  logical_time : Int64
+  remaining_budgets : Array[Budget]
+} derive(Eq, Debug, ToJson)
+
+///|
+/// Every committed runtime transition that affects subsequent decisions.
+pub(all) enum AuditEventKind {
+  Checked(Receipt)
+  Delegated(DelegationReceipt)
+} derive(Eq, Debug, ToJson)
+
+///|
+/// Ordered runtime evidence. Event sequence numbers include delegations;
+/// `Receipt.sequence` continues to count authorization decisions only.
+pub(all) struct AuditEvent {
+  sequence : Int
+  kind : AuditEventKind
+} derive(Eq, Debug, ToJson)
+
+///|
 /// Stable category for one check recorded in an authorization proof.
 pub(all) enum ProofCheckKind {
   InvocationUnique
@@ -233,7 +258,8 @@ pub(all) enum AuditIssueCode {
 } derive(Eq, Debug, ToJson)
 
 ///|
-/// One evidence-integrity problem found during replay.
+/// One evidence-integrity problem found during replay. `receipt_index` is the
+/// one-based stream position, including delegation events in `audit_events`.
 pub(all) struct AuditFinding {
   receipt_index : Int
   code : AuditIssueCode
@@ -241,7 +267,7 @@ pub(all) struct AuditFinding {
 } derive(Eq, Debug, ToJson)
 
 ///|
-/// Result of deterministically replaying a receipt stream.
+/// Result of deterministically replaying a receipt or complete event stream.
 pub struct AuditReport {
   checked : Int
   findings : Array[AuditFinding]
@@ -254,6 +280,7 @@ pub struct Runtime {
   states : Array[GrantState]
   seen_invocations : Set[String]
   receipts : Array[Receipt]
+  events : Array[AuditEvent]
   mut sequence : Int
 }
 
@@ -514,6 +541,11 @@ declare pub fn Runtime::receipt_count(self : Runtime) -> Int
 declare pub fn Runtime::receipts(self : Runtime) -> Array[Receipt]
 
 ///|
+/// Return snapshots of checks and successful delegations in execution order.
+/// Failed delegation attempts do not change state or emit an event.
+declare pub fn Runtime::events(self : Runtime) -> Array[AuditEvent]
+
+///|
 /// Return the current budget for a grant identifier.
 declare pub fn Runtime::remaining_budget(
   self : Runtime,
@@ -524,7 +556,8 @@ declare pub fn Runtime::remaining_budget(
 /// Issue a child permit by reserving its finite budgets from this runtime.
 ///
 /// The operation is transactional: any unsupported child grant leaves every
-/// parent counter unchanged. `now` is used to reject expired parent grants.
+/// parent counter and the event stream unchanged. A successful operation emits
+/// one delegation event. `now` is used to reject expired parent grants.
 declare pub fn Runtime::delegate(
   self : Runtime,
   child_id : String,
@@ -537,18 +570,48 @@ declare pub fn Runtime::delegate(
 declare pub fn Receipt::allowed(self : Receipt) -> Bool
 
 ///|
-/// Replay receipts from a fresh permit and detect inconsistent evidence.
+/// Replay a check-only execution from a fresh permit. Use `audit_events` when
+/// the runtime also delegates: receipts alone omit reserved parent budgets.
 declare pub fn audit_receipts(
   permit : Permit,
   receipts : Array[Receipt],
 ) -> AuditReport
 
 ///|
-/// Whether every supplied receipt exactly matches deterministic replay.
+/// Replay both authorization checks and successful child-budget reservations.
+/// Detect inconsistent order, permit bindings, child grants and counters.
+/// Evidence is deterministic, not signed; independent storage is still needed.
+///
+/// # Example
+/// ```mbt check
+/// test {
+///   let effect = @moonpermit.SecretRead("token")
+///   let permit = @moonpermit.compile_plan("parent", [
+///     @moonpermit.effect_request(effect, @moonpermit.budget(max_calls=2)),
+///   ])
+///   let evaluator = @moonpermit.runtime(permit)
+///   ignore(
+///     evaluator.delegate(
+///       "child",
+///       [@moonpermit.effect_request(effect, @moonpermit.budget(max_calls=1))],
+///       0L,
+///     ),
+///   )
+///   assert_true(evaluator.check("parent-read", effect, 1L).allowed())
+///   assert_true(@moonpermit.audit_events(permit, evaluator.events()).passed())
+/// }
+/// ```
+declare pub fn audit_events(
+  permit : Permit,
+  events : Array[AuditEvent],
+) -> AuditReport
+
+///|
+/// Whether every supplied stream entry exactly matches deterministic replay.
 declare pub fn AuditReport::passed(self : AuditReport) -> Bool
 
 ///|
-/// Return the number of replayed receipts.
+/// Return the number of supplied receipts or events examined.
 declare pub fn AuditReport::checked(self : AuditReport) -> Int
 
 ///|

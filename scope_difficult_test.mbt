@@ -46,5 +46,5 @@ test "canonical effects are stable and explicit" {
     @moonpermit.command_exact("moon", ["test", "--deny-warn"]),
   )
   assert_eq(read.canonical(), "fs.read:src/**")
-  assert_eq(run.canonical(), "process.exec:moon test --deny-warn")
+  assert_eq(run.canonical(), "process.exec:[\"moon\",\"test\",\"--deny-warn\"]")
 }

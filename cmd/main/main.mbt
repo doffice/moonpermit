@@ -173,16 +173,20 @@ fn[T : ToJson] print_json(value : T) -> Unit {
 }
 
 ///|
-fn run_compile(matches : @argparse.Matches) -> Unit raise {
-  let permit = @moonpermit.compile_plan(
-    value(matches, "permit-id"),
-    parse_requests(matches),
-  )
-  print_json(permit)
+fn compile_result(matches : @argparse.Matches) -> @moonpermit.Permit raise {
+  @moonpermit.compile_plan(value(matches, "permit-id"), parse_requests(matches))
 }
 
 ///|
-fn run_check(matches : @argparse.Matches) -> Unit raise {
+fn run_compile(matches : @argparse.Matches) -> Unit raise {
+  print_json(compile_result(matches))
+}
+
+///|
+fn check_each(
+  matches : @argparse.Matches,
+  emit : (@moonpermit.Receipt) -> Unit,
+) -> Unit raise {
   let permit = @moonpermit.compile_plan("cli-check", [
     @moonpermit.effect_request(
       parse_effect(value(matches, "approved-effect")),
@@ -193,8 +197,11 @@ fn run_check(matches : @argparse.Matches) -> Unit raise {
   let requested = parse_effect(value(matches, "requested-effect"))
   let byte_cost = parse_optional_int64(matches, "cost").unwrap_or(0L)
   let repeat = parse_optional_int(matches, "repeat").unwrap_or(1)
+  if repeat <= 0 {
+    raise Failure("repeat must be positive")
+  }
   for index in 0..<repeat {
-    print_json(
+    emit(
       runtime.check(
         "cli-call-\{index + 1}",
         requested,
@@ -206,7 +213,14 @@ fn run_check(matches : @argparse.Matches) -> Unit raise {
 }
 
 ///|
-fn run_explain(matches : @argparse.Matches) -> Unit raise {
+fn run_check(matches : @argparse.Matches) -> Unit raise {
+  check_each(matches, receipt => print_json(receipt))
+}
+
+///|
+fn explain_result(
+  matches : @argparse.Matches,
+) -> @moonpermit.CheckedAuthorization raise {
   let permit = @moonpermit.compile_plan("cli-explain", [
     @moonpermit.effect_request(
       parse_effect(value(matches, "approved-effect")),
@@ -217,13 +231,16 @@ fn run_explain(matches : @argparse.Matches) -> Unit raise {
   let requested = parse_effect(value(matches, "requested-effect"))
   let byte_cost = parse_optional_int64(matches, "cost").unwrap_or(0L)
   let now = parse_optional_int64(matches, "now").unwrap_or(0L)
-  print_json(
-    runtime.check_with_proof("cli-explain", requested, now, byte_cost~),
-  )
+  runtime.check_with_proof("cli-explain", requested, now, byte_cost~)
 }
 
 ///|
-fn run_delegate(matches : @argparse.Matches) -> Unit raise {
+fn run_explain(matches : @argparse.Matches) -> Unit raise {
+  print_json(explain_result(matches))
+}
+
+///|
+fn delegate_result(matches : @argparse.Matches) -> @moonpermit.Permit raise {
   let parent = @moonpermit.compile_plan("cli-parent", [
     @moonpermit.effect_request(
       parse_effect(value(matches, "parent-effect")),
@@ -233,7 +250,7 @@ fn run_delegate(matches : @argparse.Matches) -> Unit raise {
     ),
   ])
   let parent_runtime = @moonpermit.runtime(parent)
-  let child = parent_runtime.delegate(
+  parent_runtime.delegate(
     "cli-child",
     [
       @moonpermit.effect_request(
@@ -245,11 +262,15 @@ fn run_delegate(matches : @argparse.Matches) -> Unit raise {
     ],
     0L,
   )
-  print_json(child)
 }
 
 ///|
-fn run_diff(matches : @argparse.Matches) -> Unit raise {
+fn run_delegate(matches : @argparse.Matches) -> Unit raise {
+  print_json(delegate_result(matches))
+}
+
+///|
+fn diff_result(matches : @argparse.Matches) -> @moonpermit.PermitDiff raise {
   let approved = @moonpermit.compile_plan("cli-approved", [
     @moonpermit.effect_request(
       parse_effect(value(matches, "approved-effect")),
@@ -262,7 +283,12 @@ fn run_diff(matches : @argparse.Matches) -> Unit raise {
       @moonpermit.budget(max_calls=2),
     ),
   ])
-  println(@moonpermit.diff_permits(approved, requested).render())
+  @moonpermit.diff_permits(approved, requested)
+}
+
+///|
+fn run_diff(matches : @argparse.Matches) -> Unit raise {
+  println(diff_result(matches).render())
 }
 
 ///|
@@ -270,10 +296,22 @@ fn audit_scenario() -> @moonpermit.AuditReport raise {
   let permit = @moonpermit.compile_plan("cli-audit", [
     @moonpermit.effect_request(
       @moonpermit.FileRead(@moonpermit.path_tree("docs")),
-      @moonpermit.budget(max_calls=1),
+      @moonpermit.budget(max_calls=2),
     ),
   ])
   let runtime = @moonpermit.runtime(permit)
+  ignore(
+    runtime.delegate(
+      "cli-audit-child",
+      [
+        @moonpermit.effect_request(
+          @moonpermit.FileRead(@moonpermit.path_exact("docs/guide.md")),
+          @moonpermit.budget(max_calls=1),
+        ),
+      ],
+      0L,
+    ),
+  )
   ignore(
     runtime.check(
       "demo-allow",
@@ -295,7 +333,7 @@ fn audit_scenario() -> @moonpermit.AuditReport raise {
       3L,
     ),
   )
-  @moonpermit.audit_receipts(permit, runtime.receipts())
+  @moonpermit.audit_events(permit, runtime.events())
 }
 
 ///|
@@ -476,7 +514,7 @@ fn cli() -> @argparse.Command {
   @argparse.Command(
     "moonpermit",
     about="Proof-carrying effect plans for AI agents",
-    version="0.1.0",
+    version="0.2.0",
     default_subcommand="demo",
     subcommands=[
       compile,
@@ -484,7 +522,7 @@ fn cli() -> @argparse.Command {
       explain,
       delegate,
       diff,
-      @argparse.Command("audit", about="Replay a receipt stream offline"),
+      @argparse.Command("audit", about="Replay checks and delegation offline"),
       @argparse.Command("demo", about="Run the end-to-end built-in demo"),
     ],
   )

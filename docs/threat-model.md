@@ -19,6 +19,8 @@ ensure:
 - Expired grants, exhausted counters, and duplicate invocation identifiers.
 - Child-agent privilege escalation and budget replenishment.
 - Receipt reordering, gaps, and content mismatch.
+- Delegation/check replay, reservation tampering, rollback and command-argument
+  boundary collisions (regressions pass in the v0.2.0 native test suite).
 - Host-adapter regressions that execute after scope, expiry, budget, duplicate,
   or unsupported-call denial.
 
@@ -32,6 +34,10 @@ cryptographic authenticity in v0.1.
 
 Deterministic fingerprints in v0.1 detect accidental inconsistency; they are
 not digital signatures and must not be presented as tamper-proof evidence.
+
+Replay alone cannot prove that every real operation was logged. An intact
+prefix or a coherently rewritten log may pass. A delegating runtime must use
+the full event stream; check-only receipts omit reserved child budgets.
 
 ## Safe failure policy
 

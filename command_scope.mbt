@@ -79,8 +79,8 @@ pub fn command_contains(grant : CommandScope, requested : CommandScope) -> Bool 
 
 ///|
 fn CommandScope::canonical(self : CommandScope) -> String {
-  let fixed = self.arguments.join(" ")
-  let base = if fixed is "" { self.program } else { self.program + " " + fixed }
+  // JSON preserves argument boundaries, empty arguments and escaping.
+  let base = ([self.program] + self.arguments).to_json().stringify()
   if self.allow_extra_arguments {
     base + " ..."
   } else {

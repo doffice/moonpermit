@@ -7,6 +7,8 @@ import {
 }
 
 // Values
+pub fn audit_events(Permit, Array[AuditEvent]) -> AuditReport
+
 pub fn audit_receipts(Permit, Array[Receipt]) -> AuditReport
 
 pub fn budget(max_calls? : Int, max_bytes? : Int64, expires_at? : Int64) -> Budget raise PermitError
@@ -67,6 +69,10 @@ pub(all) suberror PermitError {
   InvalidByteCost(Int64)
   ChildAuthorityExceeded(String)
 } derive(Eq, ToJson, @debug.Debug)
+pub fn PermitError::equal(Self, Self) -> Bool
+pub fn PermitError::not_equal(Self, Self) -> Bool
+pub fn PermitError::to_json(Self) -> Json
+pub fn PermitError::to_repr(Self) -> @debug.Repr
 
 pub(all) suberror ScopeError {
   EmptyPath
@@ -79,13 +85,39 @@ pub(all) suberror ScopeError {
   InvalidMethod(String)
   EmptySecret
 } derive(Eq, ToJson, @debug.Debug)
+pub fn ScopeError::equal(Self, Self) -> Bool
+pub fn ScopeError::not_equal(Self, Self) -> Bool
+pub fn ScopeError::to_json(Self) -> Json
+pub fn ScopeError::to_repr(Self) -> @debug.Repr
 
 // Types and methods
+pub(all) struct AuditEvent {
+  sequence : Int
+  kind : AuditEventKind
+} derive(Eq, ToJson, @debug.Debug)
+pub fn AuditEvent::equal(Self, Self) -> Bool
+pub fn AuditEvent::not_equal(Self, Self) -> Bool
+pub fn AuditEvent::to_json(Self) -> Json
+pub fn AuditEvent::to_repr(Self) -> @debug.Repr
+
+pub(all) enum AuditEventKind {
+  Checked(Receipt)
+  Delegated(DelegationReceipt)
+} derive(Eq, ToJson, @debug.Debug)
+pub fn AuditEventKind::equal(Self, Self) -> Bool
+pub fn AuditEventKind::not_equal(Self, Self) -> Bool
+pub fn AuditEventKind::to_json(Self) -> Json
+pub fn AuditEventKind::to_repr(Self) -> @debug.Repr
+
 pub(all) struct AuditFinding {
   receipt_index : Int
   code : AuditIssueCode
   message : String
 } derive(Eq, ToJson, @debug.Debug)
+pub fn AuditFinding::equal(Self, Self) -> Bool
+pub fn AuditFinding::not_equal(Self, Self) -> Bool
+pub fn AuditFinding::to_json(Self) -> Json
+pub fn AuditFinding::to_repr(Self) -> @debug.Repr
 
 pub(all) enum AuditIssueCode {
   SequenceMismatch
@@ -93,14 +125,22 @@ pub(all) enum AuditIssueCode {
   ReplayMismatch
   InvalidReceipt
 } derive(Eq, ToJson, @debug.Debug)
+pub fn AuditIssueCode::equal(Self, Self) -> Bool
+pub fn AuditIssueCode::not_equal(Self, Self) -> Bool
+pub fn AuditIssueCode::to_json(Self) -> Json
+pub fn AuditIssueCode::to_repr(Self) -> @debug.Repr
 
 pub struct AuditReport {
   checked : Int
   findings : Array[AuditFinding]
 } derive(Eq, ToJson, @debug.Debug)
 pub fn AuditReport::checked(Self) -> Int
+pub fn AuditReport::equal(Self, Self) -> Bool
 pub fn AuditReport::findings(Self) -> Array[AuditFinding]
+pub fn AuditReport::not_equal(Self, Self) -> Bool
 pub fn AuditReport::passed(Self) -> Bool
+pub fn AuditReport::to_json(Self) -> Json
+pub fn AuditReport::to_repr(Self) -> @debug.Repr
 
 pub(all) struct AuthorizationProof {
   sequence : Int
@@ -113,20 +153,32 @@ pub(all) struct AuthorizationProof {
   reason : ReasonCode
   checks : Array[ProofCheck]
 } derive(Eq, ToJson, @debug.Debug)
+pub fn AuthorizationProof::equal(Self, Self) -> Bool
+pub fn AuthorizationProof::not_equal(Self, Self) -> Bool
+pub fn AuthorizationProof::to_json(Self) -> Json
+pub fn AuthorizationProof::to_repr(Self) -> @debug.Repr
 
 pub struct Budget {
   max_calls : Int?
   max_bytes : Int64?
   expires_at : Int64?
 } derive(Eq, ToJson, @debug.Debug)
+pub fn Budget::equal(Self, Self) -> Bool
 pub fn Budget::expires_at(Self) -> Int64?
 pub fn Budget::max_bytes(Self) -> Int64?
 pub fn Budget::max_calls(Self) -> Int?
+pub fn Budget::not_equal(Self, Self) -> Bool
+pub fn Budget::to_json(Self) -> Json
+pub fn Budget::to_repr(Self) -> @debug.Repr
 
 pub(all) struct CheckedAuthorization {
   receipt : Receipt
   proof : AuthorizationProof
 } derive(Eq, ToJson, @debug.Debug)
+pub fn CheckedAuthorization::equal(Self, Self) -> Bool
+pub fn CheckedAuthorization::not_equal(Self, Self) -> Bool
+pub fn CheckedAuthorization::to_json(Self) -> Json
+pub fn CheckedAuthorization::to_repr(Self) -> @debug.Repr
 
 pub struct CommandScope {
   program : String
@@ -135,12 +187,20 @@ pub struct CommandScope {
 } derive(Eq, ToJson, @debug.Debug)
 pub fn CommandScope::allows_extra_arguments(Self) -> Bool
 pub fn CommandScope::arguments(Self) -> Array[String]
+pub fn CommandScope::equal(Self, Self) -> Bool
+pub fn CommandScope::not_equal(Self, Self) -> Bool
 pub fn CommandScope::program(Self) -> String
+pub fn CommandScope::to_json(Self) -> Json
+pub fn CommandScope::to_repr(Self) -> @debug.Repr
 
 pub(all) enum Containment {
   Contained
   NotContained(reason~ : String)
 } derive(Eq, ToJson, @debug.Debug)
+pub fn Containment::equal(Self, Self) -> Bool
+pub fn Containment::not_equal(Self, Self) -> Bool
+pub fn Containment::to_json(Self) -> Json
+pub fn Containment::to_repr(Self) -> @debug.Repr
 
 pub(all) enum DataClass {
   Public
@@ -148,6 +208,21 @@ pub(all) enum DataClass {
   Confidential
   Secret
 } derive(Eq, ToJson, @debug.Debug)
+pub fn DataClass::equal(Self, Self) -> Bool
+pub fn DataClass::not_equal(Self, Self) -> Bool
+pub fn DataClass::to_json(Self) -> Json
+pub fn DataClass::to_repr(Self) -> @debug.Repr
+
+pub(all) struct DelegationReceipt {
+  parent_permit_id : String
+  child : Permit
+  logical_time : Int64
+  remaining_budgets : Array[Budget]
+} derive(Eq, ToJson, @debug.Debug)
+pub fn DelegationReceipt::equal(Self, Self) -> Bool
+pub fn DelegationReceipt::not_equal(Self, Self) -> Bool
+pub fn DelegationReceipt::to_json(Self) -> Json
+pub fn DelegationReceipt::to_repr(Self) -> @debug.Repr
 
 pub(all) struct DiffEntry {
   effect : String
@@ -156,6 +231,10 @@ pub(all) struct DiffEntry {
   covered_by : String?
   explanation : String
 } derive(Eq, ToJson, @debug.Debug)
+pub fn DiffEntry::equal(Self, Self) -> Bool
+pub fn DiffEntry::not_equal(Self, Self) -> Bool
+pub fn DiffEntry::to_json(Self) -> Json
+pub fn DiffEntry::to_repr(Self) -> @debug.Repr
 
 pub struct EffectRequest {
   effect : EffectScope
@@ -163,6 +242,10 @@ pub struct EffectRequest {
 } derive(Eq, ToJson, @debug.Debug)
 pub fn EffectRequest::budget(Self) -> Budget
 pub fn EffectRequest::effect(Self) -> EffectScope
+pub fn EffectRequest::equal(Self, Self) -> Bool
+pub fn EffectRequest::not_equal(Self, Self) -> Bool
+pub fn EffectRequest::to_json(Self) -> Json
+pub fn EffectRequest::to_repr(Self) -> @debug.Repr
 
 pub(all) enum EffectScope {
   FileRead(PathScope)
@@ -173,6 +256,10 @@ pub(all) enum EffectScope {
   SecretRead(String)
 } derive(Eq, ToJson, @debug.Debug)
 pub fn EffectScope::canonical(Self) -> String
+pub fn EffectScope::equal(Self, Self) -> Bool
+pub fn EffectScope::not_equal(Self, Self) -> Bool
+pub fn EffectScope::to_json(Self) -> Json
+pub fn EffectScope::to_repr(Self) -> @debug.Repr
 
 pub struct Grant {
   id : String
@@ -181,7 +268,11 @@ pub struct Grant {
 } derive(Eq, ToJson, @debug.Debug)
 pub fn Grant::budget(Self) -> Budget
 pub fn Grant::effect(Self) -> EffectScope
+pub fn Grant::equal(Self, Self) -> Bool
 pub fn Grant::id(Self) -> String
+pub fn Grant::not_equal(Self, Self) -> Bool
+pub fn Grant::to_json(Self) -> Json
+pub fn Grant::to_repr(Self) -> @debug.Repr
 
 type GrantState
 
@@ -190,29 +281,45 @@ pub struct HostScope {
   subdomains : Bool
 } derive(Eq, ToJson, @debug.Debug)
 pub fn HostScope::canonical(Self) -> String
+pub fn HostScope::equal(Self, Self) -> Bool
 pub fn HostScope::includes_subdomains(Self) -> Bool
+pub fn HostScope::not_equal(Self, Self) -> Bool
+pub fn HostScope::to_json(Self) -> Json
+pub fn HostScope::to_repr(Self) -> @debug.Repr
 
 pub struct NetworkScope {
   host : HostScope
   methods : Array[String]
   max_data_class : DataClass
 } derive(Eq, ToJson, @debug.Debug)
+pub fn NetworkScope::equal(Self, Self) -> Bool
+pub fn NetworkScope::not_equal(Self, Self) -> Bool
+pub fn NetworkScope::to_json(Self) -> Json
+pub fn NetworkScope::to_repr(Self) -> @debug.Repr
 
 pub struct PathScope {
   canonical : String
   tree : Bool
 } derive(Eq, ToJson, @debug.Debug)
 pub fn PathScope::canonical(Self) -> String
+pub fn PathScope::equal(Self, Self) -> Bool
 pub fn PathScope::is_tree(Self) -> Bool
+pub fn PathScope::not_equal(Self, Self) -> Bool
+pub fn PathScope::to_json(Self) -> Json
+pub fn PathScope::to_repr(Self) -> @debug.Repr
 
 pub struct Permit {
   id : String
   grants : Array[Grant]
 } derive(Eq, ToJson, @debug.Debug)
 pub fn Permit::canonical(Self) -> String
+pub fn Permit::equal(Self, Self) -> Bool
 pub fn Permit::grant_count(Self) -> Int
 pub fn Permit::grants(Self) -> Array[Grant]
 pub fn Permit::id(Self) -> String
+pub fn Permit::not_equal(Self, Self) -> Bool
+pub fn Permit::to_json(Self) -> Json
+pub fn Permit::to_repr(Self) -> @debug.Repr
 
 pub struct PermitDiff {
   approved_id : String
@@ -220,8 +327,12 @@ pub struct PermitDiff {
   entries : Array[DiffEntry]
 } derive(Eq, ToJson, @debug.Debug)
 pub fn PermitDiff::entries(Self) -> Array[DiffEntry]
+pub fn PermitDiff::equal(Self, Self) -> Bool
+pub fn PermitDiff::not_equal(Self, Self) -> Bool
 pub fn PermitDiff::render(Self) -> String
 pub fn PermitDiff::requires_approval(Self) -> Bool
+pub fn PermitDiff::to_json(Self) -> Json
+pub fn PermitDiff::to_repr(Self) -> @debug.Repr
 
 pub(all) struct ProofCheck {
   kind : ProofCheckKind
@@ -229,6 +340,10 @@ pub(all) struct ProofCheck {
   grant_id : String?
   explanation : String
 } derive(Eq, ToJson, @debug.Debug)
+pub fn ProofCheck::equal(Self, Self) -> Bool
+pub fn ProofCheck::not_equal(Self, Self) -> Bool
+pub fn ProofCheck::to_json(Self) -> Json
+pub fn ProofCheck::to_repr(Self) -> @debug.Repr
 
 pub(all) enum ProofCheckKind {
   InvocationUnique
@@ -237,12 +352,20 @@ pub(all) enum ProofCheckKind {
   CallBudgetAvailable
   ByteBudgetAvailable
 } derive(Eq, ToJson, @debug.Debug)
+pub fn ProofCheckKind::equal(Self, Self) -> Bool
+pub fn ProofCheckKind::not_equal(Self, Self) -> Bool
+pub fn ProofCheckKind::to_json(Self) -> Json
+pub fn ProofCheckKind::to_repr(Self) -> @debug.Repr
 
 pub(all) enum ProofCheckStatus {
   Pass
   Fail
   Skipped
 } derive(Eq, ToJson, @debug.Debug)
+pub fn ProofCheckStatus::equal(Self, Self) -> Bool
+pub fn ProofCheckStatus::not_equal(Self, Self) -> Bool
+pub fn ProofCheckStatus::to_json(Self) -> Json
+pub fn ProofCheckStatus::to_repr(Self) -> @debug.Repr
 
 pub(all) enum ReasonCode {
   Granted
@@ -252,6 +375,10 @@ pub(all) enum ReasonCode {
   ByteBudgetExhausted
   DuplicateInvocation
 } derive(Eq, ToJson, @debug.Debug)
+pub fn ReasonCode::equal(Self, Self) -> Bool
+pub fn ReasonCode::not_equal(Self, Self) -> Bool
+pub fn ReasonCode::to_json(Self) -> Json
+pub fn ReasonCode::to_repr(Self) -> @debug.Repr
 
 pub(all) struct Receipt {
   sequence : Int
@@ -269,17 +396,23 @@ pub(all) struct Receipt {
   remaining_bytes : Int64?
 } derive(Eq, ToJson, @debug.Debug)
 pub fn Receipt::allowed(Self) -> Bool
+pub fn Receipt::equal(Self, Self) -> Bool
+pub fn Receipt::not_equal(Self, Self) -> Bool
+pub fn Receipt::to_json(Self) -> Json
+pub fn Receipt::to_repr(Self) -> @debug.Repr
 
 pub struct Runtime {
   permit_id : String
   states : Array[GrantState]
   seen_invocations : @set.Set[String]
   receipts : Array[Receipt]
+  events : Array[AuditEvent]
   mut sequence : Int
 }
 pub fn Runtime::check(Self, String, EffectScope, Int64, byte_cost? : Int64) -> Receipt raise PermitError
 pub fn Runtime::check_with_proof(Self, String, EffectScope, Int64, byte_cost? : Int64) -> CheckedAuthorization raise PermitError
 pub fn Runtime::delegate(Self, String, Array[EffectRequest], Int64) -> Permit raise PermitError
+pub fn Runtime::events(Self) -> Array[AuditEvent]
 pub fn Runtime::permit_id(Self) -> String
 pub fn Runtime::receipt_count(Self) -> Int
 pub fn Runtime::receipts(Self) -> Array[Receipt]
@@ -290,6 +423,10 @@ pub(all) enum Verdict {
   Deny
   NeedsApproval
 } derive(Eq, ToJson, @debug.Debug)
+pub fn Verdict::equal(Self, Self) -> Bool
+pub fn Verdict::not_equal(Self, Self) -> Bool
+pub fn Verdict::to_json(Self) -> Json
+pub fn Verdict::to_repr(Self) -> @debug.Repr
 
 // Type aliases
 

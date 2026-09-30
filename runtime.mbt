@@ -21,6 +21,7 @@ pub fn runtime(permit : Permit) -> Runtime {
     states,
     seen_invocations: Set([]),
     receipts: [],
+    events: [],
     sequence: 0,
   }
 }
@@ -56,6 +57,10 @@ fn Runtime::emit(
     remaining_bytes,
   }
   self.receipts.push(receipt)
+  self.events.push({
+    sequence: self.events.length() + 1,
+    kind: AuditEventKind::Checked(receipt),
+  })
   receipt
 }
 
@@ -381,6 +386,23 @@ pub fn Runtime::receipt_count(self : Runtime) -> Int {
 ///|
 pub fn Runtime::receipts(self : Runtime) -> Array[Receipt] {
   self.receipts.copy()
+}
+
+///|
+pub fn Runtime::events(self : Runtime) -> Array[AuditEvent] {
+  self.events.map(event => {
+    match event.kind {
+      Checked(_) => event
+      Delegated(delegation) =>
+        {
+          sequence: event.sequence,
+          kind: AuditEventKind::Delegated({
+            ..delegation,
+            remaining_budgets: delegation.remaining_budgets.copy(),
+          }),
+        }
+    }
+  })
 }
 
 ///|

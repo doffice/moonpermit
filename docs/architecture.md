@@ -109,11 +109,44 @@ mediation, not operating-system enforcement or a general Agent framework.
 ## Offline audit
 
 Receipts retain the normalized typed request, logical time, byte cost, decision,
-selected grant, and remaining counters. The auditor starts from a fresh permit
-and replays every receipt in order, comparing the complete expected record.
-Sequence gaps, wrong permit identifiers, invalid inputs, altered decisions,
-and altered accounting are reported as stable finding categories. This detects
-inconsistency but is not a cryptographic authenticity claim.
+selected grant and remaining counters. A receipt stream alone is sufficient
+only when the runtime has performed checks without delegating.
+
+The v0.2.0 `AuditEvent` stream records every check and successful delegation.
+A delegation event contains the child permit, logical time, parent identifier
+and the remaining parent budgets in canonical grant order. It is appended
+after every staged reservation commits. Rejected delegation attempts change
+neither counters nor events. Receipt sequence numbers count checks; event
+sequence numbers count both checks and successful delegations.
+
+`audit_events` starts from the original permit, replays each check or child
+reservation in order and compares the entire expected event. Sequence gaps,
+wrong permit identifiers, invalid inputs and inconsistent accounting produce
+stable finding categories. `AuditFinding.receipt_index` is the one-based event
+position for this API. The legacy `audit_receipts` API remains check-only.
+
+The runtime retains both receipt and event arrays. Their memory grows with
+the number of recorded operations; snapshots copy the event array and mutable
+delegation-budget arrays. Durable storage remains the host's responsibility.
+
+Replay detects inconsistency, not cryptographic authenticity or completeness.
+A consistently rewritten stream or a truncated valid prefix can still pass.
+Use independently protected storage and a trusted expected event count when
+those properties are required. Parent and child runtimes are audited separately
+against their respective permits.
+
+## Command identifier migration
+
+The old space-joined command form could assign one identifier to `tool` with
+arguments `["a b", "c"]` and `["a", "b c"]`. v0.2.0 uses a JSON array containing
+the program and fixed arguments, with ` ...` appended only for a prefix scope.
+This preserves argument boundaries, empty arguments and escaping. Planners
+can now sort these distinct effects deterministically regardless of input order.
+
+This changes command canonical strings and can change their sorted grant IDs.
+Retain v0.1 receipts, permits and the original library version for historical
+replay. Do not rewrite old evidence to resemble a v0.2 execution. New executions
+should persist the original permit, full event stream and implementation version.
 
 ## Trusted computing boundary
 

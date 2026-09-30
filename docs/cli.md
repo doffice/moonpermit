@@ -44,7 +44,7 @@ moon run cmd/main -- delegate --parent-calls 2 --child-calls 1 \
 # Mark an authority expansion as NEEDS_APPROVAL.
 moon run cmd/main -- diff read-tree:docs read:.env
 
-# Run deterministic offline replay over the built-in evidence scenario.
+# Replay a successful delegation, allow, exhaustion and scope denial.
 moon run cmd/main -- audit
 ```
 
@@ -54,8 +54,18 @@ runtime transition. The proof records invocation uniqueness plus per-grant
 scope, expiry, call-budget, and byte-budget checks as `Pass`, `Fail`, or
 `Skipped`; `decision_grant_id` identifies the selected or rejected matching
 grant. `diff` emits a stable review-oriented text form. The library function
-`audit_receipts` accepts a permit and receipt array, enabling hosts to replay
-persisted logs without contacting an external service.
+`audit_events` accepts a permit and an ordered `Runtime::events()` snapshot,
+enabling hosts to replay checks and delegated budget reservations without an
+external service. `audit_receipts` supports check-only executions.
+
+`check --repeat` must be a positive integer. Negative time, cost and budget
+values, invalid integers, missing arguments and unsupported scopes fail with
+an error. A valid authorization denial is a successful CLI evaluation whose
+receipt contains `Deny`; callers must inspect the verdict before execution.
+
+Command scope identifiers use a JSON array to preserve argument boundaries.
+For example, quote `'exec:tool,a b,c'` when passing a space-bearing argument
+through the CLI. Commas still require the typed library API.
 
 ## Current boundary
 

@@ -35,9 +35,7 @@ test "guarded host denies scope, expiry, duplicate, and unsupported calls" {
   ignore(host.invoke("unknown", Unsupported("shell"), 1L, 0L))
   assert_eq(host.executor.calls, 0)
   assert_eq(host.runtime.receipt_count(), 3)
-  assert_true(
-    @moonpermit.audit_receipts(permit, host.runtime.receipts()).passed(),
-  )
+  assert_true(@moonpermit.audit_events(permit, host.runtime.events()).passed())
 }
 
 ///|

@@ -4,13 +4,16 @@ MoonPermit is being developed in public for the 2026 MoonBit September
 Hackathon. Contributions must keep the history, licensing, and verification
 evidence reviewable.
 
-Before submitting a change:
+Use moonc 0.10.14 or newer. CI pins the compiler and matching core to
+`0.10.14+7d59c7ec9`. Before submitting a change:
 
 ```bash
 moon check --deny-warn
 moon test --deny-warn
-moon fmt --check
+moon fmt
 moon info
+moon fmt --check
+moon build
 ```
 
 Use focused commits. Public APIs require black-box tests and documentation.
