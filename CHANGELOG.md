@@ -4,7 +4,7 @@ All notable changes will be documented here.
 
 ## Unreleased
 
-### 0.2.0 (verification and publication pending)
+### 0.2.0 (CI verified; publication pending)
 
 - Record successful child-budget reservations alongside authorization checks
   through `Runtime::events` and replay the complete stream with `audit_events`.
@@ -20,7 +20,7 @@ All notable changes will be documented here.
 - Explicitly extend public derived methods for MoonBit 0.10.14 compatibility;
   regenerate the public interface with `moon info`.
 - Correct the acceptance checklist and distinguish historical quality results
-  from pending verification of this source.
+  from this source's passing three-platform CI, 87 tests and 96.9% core coverage.
 
 ## 0.1.1 - 2026-09-11
 

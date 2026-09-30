@@ -34,8 +34,10 @@ receipts, structured authorization proofs, and deterministic offline replay are
 implemented and tested.
 
 This source branch prepares **v0.2.0**. It adds complete replay of child-budget
-reservations and fixes ambiguous command identifiers. The release and its CI
-verification are pending; v0.1.1 remains the published version. See
+reservations and fixes ambiguous command identifiers. All four jobs in
+[PR #10 CI](https://github.com/doffice/moonpermit/actions/runs/36737771009)
+passed with moonc 0.10.14, including 87 tests on each of Ubuntu, macOS and
+Windows. Publication is pending; v0.1.1 remains the published version. See
 [`docs/quality.md`](docs/quality.md) for the evidence and remaining gates.
 
 ## Planned workflow
@@ -222,7 +224,7 @@ moon run examples/guarded_host
 ```
 
 See [`docs/quality.md`](docs/quality.md) for the passing 87-test native suite,
-current coverage, benchmark workloads and the pending default-backend CI.
+current coverage, benchmark workloads and the passing default-backend CI.
 The earlier passing CI used moonc 0.10.12 and does not establish compliance
 with the hackathon's minimum compiler requirement.
 
