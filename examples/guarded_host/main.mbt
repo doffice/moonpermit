@@ -99,7 +99,7 @@ fn demo_lines() -> Array[String] raise {
   ])
   let diff = @moonpermit.diff_permits(permit, requested)
   lines.push("needs_approval=" + diff.requires_approval().to_string())
-  let audit = @moonpermit.audit_receipts(permit, host.runtime.receipts())
+  let audit = @moonpermit.audit_events(permit, host.runtime.events())
   lines.push(
     "audit=" +
     audit.passed().to_string() +
